@@ -238,10 +238,11 @@ select{font-family:inherit;font-size:14px;padding:8px;border-radius:10px;border:
         <button class="btn" id="setInstall">📲 安裝到主畫面</button>
       </div>
       <div class="set">
-        <h3>🗣️ 發音聲音 · Voz</h3>
-        <p>選一個拉美西語聲音（es-MX / es-US 最自然）。Web Speech 提供，視裝置而定。</p>
-        <label class="row">聲音 Voice <select id="voiceSel"></select></label>
+        <h3>🗣️ 發音 · Voz</h3>
+        <p>內建拉美西語<strong>神經語音</strong>（Dalia 女聲／Jorge 男聲），離線可用、不靠裝置語音。也可切回系統語音。</p>
+        <label class="row">語音聲線 <select id="ttsVoiceSel"><option value="f">女聲 Dalia（墨西哥）</option><option value="m">男聲 Jorge（墨西哥）</option><option value="system">系統語音（裝置）</option></select></label>
         <label class="row">語速 Velocidad <span><input type="range" id="rateSel" min="0.5" max="1.1" step="0.05"><span class="valnum" id="rateVal"></span></span></label>
+        <label class="row">系統語音（備援）<select id="voiceSel"></select></label>
         <button class="btn audio" id="testVoice" style="margin-top:8px">🔊 試聽 ¡Hola! Quiero un café.</button>
       </div>
       <div class="set">
@@ -816,11 +817,19 @@ const BOX_INT=[0, 5*60*1000, 1*DAY, 3*DAY, 7*DAY, 21*DAY]; // index by box 1..5
 const DEFAULT_STORE={
   srs:{}, lessons:{},
   stats:{ totalReps:0, totalCorrect:0, totalSlow:0, lastActive:null, days:[] },
-  settings:{ rate:0.92, threshold:3, voiceURI:"", useSR:false, theme:"auto", script:"trad" }
+  settings:{ rate:0.92, threshold:3, voiceURI:"", useSR:false, theme:"auto", script:"trad", ttsVoice:"f" }
 };
 let store = load();
 function load(){
-  try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.settings) return Object.assign({},DEFAULT_STORE,s);}catch(e){}
+  try{
+    const s=JSON.parse(localStorage.getItem(KEY));
+    if(s&&s.settings){
+      const merged=Object.assign({},DEFAULT_STORE,s);
+      merged.settings=Object.assign({},DEFAULT_STORE.settings,s.settings); // deep-merge so new keys get defaults
+      merged.stats=Object.assign({},DEFAULT_STORE.stats,s.stats||{});
+      return merged;
+    }
+  }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_STORE));
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
@@ -847,7 +856,7 @@ function primeAudio(){ // unlock TTS on iOS within a user gesture
   if(primed||!window.speechSynthesis) return; primed=true;
   try{ const u=new SpeechSynthesisUtterance(" "); u.volume=0; speechSynthesis.speak(u);}catch(e){}
 }
-function speak(text, rate){
+function ssSpeak(text, rate){ // system voice (Web Speech) — used for 系統 mode or as fallback
   if(!window.speechSynthesis) return;
   try{
     speechSynthesis.cancel();
@@ -856,6 +865,30 @@ function speak(text, rate){
     u.rate = rate || store.settings.rate; u.pitch=1;
     speechSynthesis.speak(u);
   }catch(e){}
+}
+// cyrb53 hash → stable filename for a phrase's pre-generated neural clip
+function audioKey(str){
+  let h1=0xdeadbeef,h2=0x41c6ce57;
+  for(let i=0;i<str.length;i++){ const ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); }
+  h1=Math.imul(h1^(h1>>>16),2246822507); h1^=Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507); h2^=Math.imul(h1^(h1>>>13),3266489909);
+  return (4294967296*(2097151&h2)+(h1>>>0)).toString(36);
+}
+let audioEl=null, speakSeq=0;
+function getAudioEl(){ if(!audioEl){ audioEl=new Audio(); try{ audioEl.preservesPitch=true; audioEl.mozPreservesPitch=true; audioEl.webkitPreservesPitch=true; }catch(e){} } return audioEl; }
+function speak(text, rate){
+  const v=store.settings.ttsVoice||"f";
+  speakSeq++; const myseq=speakSeq;
+  if(v==="system" || !text){ ssSpeak(text, rate); return; }
+  try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+  const a=getAudioEl();
+  let done=false; const fb=()=>{ if(done||myseq!==speakSeq) return; done=true; ssSpeak(text, rate); };
+  a.onerror=fb;
+  a.src="audio/"+v+"/"+audioKey(text)+".mp3";
+  let pr=(rate||store.settings.rate)/0.92; pr=Math.max(0.55,Math.min(1.3,pr));
+  try{ a.playbackRate=pr; a.currentTime=0; }catch(e){}
+  const p=a.play();
+  if(p&&p.then) p.then(()=>{done=true;}).catch(fb);
 }
 
 /* ---------- Speech Recognition (optional) ---------- */
@@ -1251,6 +1284,7 @@ function initSettings(){
   $("thSel").value=store.settings.threshold; $("thVal").textContent=store.settings.threshold.toFixed(1)+"s";
   $("themeSel").value=store.settings.theme;
   $("scriptSel").value=store.settings.script||"trad";
+  $("ttsVoiceSel").value=store.settings.ttsVoice||"f";
   $("srToggle").checked=store.settings.useSR && SR_SUPPORTED;
   if(!SR_SUPPORTED){ $("srToggle").disabled=true; $("srUnsupported").classList.remove("hidden"); }
   $("rateSel").oninput=e=>{ store.settings.rate=parseFloat(e.target.value); $("rateVal").textContent=store.settings.rate.toFixed(2); save(); };
@@ -1258,6 +1292,7 @@ function initSettings(){
   $("voiceSel").onchange=e=>{ store.settings.voiceURI=e.target.value; pickVoice(e.target.value); save(); };
   $("themeSel").onchange=e=>{ store.settings.theme=e.target.value; applyTheme(); save(); };
   $("scriptSel").onchange=e=>{ store.settings.script=e.target.value; save(); location.reload(); };
+  $("ttsVoiceSel").onchange=e=>{ store.settings.ttsVoice=e.target.value; save(); };
   $("srToggle").onchange=e=>{ store.settings.useSR=e.target.checked; save(); };
   $("testVoice").onclick=()=>{ primeAudio(); speak("¡Hola! Quiero un café, por favor."); };
   $("resetBtn").onclick=()=>{ if(confirm("確定清除所有進度與 SRS 記錄？此動作無法復原。")){ localStorage.removeItem(KEY); store=load(); renderHome(); initSettings(); alert("已重設 · Listo."); } };
