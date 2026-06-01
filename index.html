@@ -57,6 +57,12 @@ body{
 .stat span{font-size:11.5px;color:var(--muted)}
 .sectitle{padding:18px 16px 6px;font-size:13px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
 .lessons{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.modhead{display:flex;align-items:baseline;gap:8px;margin:14px 2px 0;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.modhead:first-child{margin-top:2px}
+.modhead .emoji{font-size:20px}
+.modhead h2{font-size:16px;font-weight:800;margin:0}
+.modhead .en{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.3px}
+.modhead .cnt{margin-left:auto;font-size:11px;font-weight:700;color:var(--brand);background:var(--slot);padding:3px 9px;border-radius:999px}
 .lcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;
   box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform .08s}
 .lcard:active{transform:scale(.985)}
@@ -472,6 +478,271 @@ const CURRICULUM = [
     scenario:{ zh:"你手機沒電又迷路，跟櫃台說你「需要充電器」並「需要打一通電話」。",
       en:"Your phone died and you're lost. Tell the desk you need a charger and to make a call.",
       model:"Necesito un cargador y necesito hacer una llamada." }
+  },
+
+  /* ============ NEW · 語言功能板块 (Language-function modules) ============ */
+  {
+    id:"tengo-que", title:"Tengo que ___ .", zh:"我必須 ___（義務／不得不）",
+    goals:["商務","日常"],
+    pattern:"Tengo que irme.", patZh:"我得走了。", patEn:"I have to go.",
+    ipa:"ˈten·ɡo · ke · ˈiɾ·me",
+    skeleton:"Tengo que ___ .",
+    rhythm:"<b>TEN</b>·go·que·<b>IR</b>·me",
+    note:"Tengo que + 動詞原形 = 必須／不得不…。表達義務與必要。\nEN: 'tener que' + infinitive = have to / must.",
+    cues:[
+      {zh:"走了",en:"to leave",a:"Tengo que irme.",ipa:"ˈiɾ·me"},
+      {zh:"工作",en:"to work",a:"Tengo que trabajar.",ipa:"tɾa·βa·ˈxaɾ"},
+      {zh:"念書",en:"to study",a:"Tengo que estudiar.",ipa:"es·tu·ˈðjaɾ"},
+      {zh:"打一通電話",en:"to make a call",a:"Tengo que hacer una llamada.",ipa:"a·ˈseɾ · u·na · ʝa·ˈma·ða"},
+      {zh:"早起",en:"to get up early",a:"Tengo que levantarme temprano.",ipa:"le·βan·ˈtaɾ·me · tem·ˈpɾa·no"},
+      {zh:"換錢",en:"to change money",a:"Tengo que cambiar dinero.",ipa:"kam·ˈbjaɾ · di·ˈne·ɾo"},
+      {zh:"趕飛機",en:"to catch the flight",a:"Tengo que tomar el vuelo.",ipa:"to·ˈmaɾ · el · ˈbwe·lo"},
+      {zh:"付帳",en:"to pay the bill",a:"Tengo que pagar la cuenta.",ipa:"pa·ˈɣaɾ · la · ˈkwen·ta"},
+      {zh:"休息",en:"to rest",a:"Tengo que descansar.",ipa:"des·kan·ˈsaɾ"},
+      {zh:"確認預訂",en:"to confirm the booking",a:"Tengo que confirmar la reserva.",ipa:"kon·fiɾ·ˈmaɾ · la · re·ˈseɾ·βa"},
+      {zh:"寄封郵件",en:"to send an email",a:"Tengo que enviar un correo.",ipa:"em·ˈbjaɾ · un · ko·ˈre·o"},
+      {zh:"看醫生",en:"to see a doctor",a:"Tengo que ver a un médico.",ipa:"beɾ · a · un · ˈme·ði·ko"},
+      {zh:"練西語",en:"to practice Spanish",a:"Tengo que practicar español.",ipa:"pɾak·ti·ˈkaɾ · es·pa·ˈɲol"},
+      {zh:"出去",en:"to go out",a:"Tengo que salir.",ipa:"sa·ˈliɾ"},
+      {zh:"等一下",en:"to wait",a:"Tengo que esperar.",ipa:"es·pe·ˈɾaɾ"}
+    ],
+    shadow:{ text:"Lo siento, tengo que irme; tengo que trabajar y tengo que hacer una llamada importante.",
+      zh:"抱歉我得走了；我得工作，還得打一通重要電話。",
+      rhythm:"lo·<b>SIEN</b>·to / <b>TEN</b>·go·que·<b>IR</b>·me / <b>TEN</b>·go·que·tra·ba·<b>JAR</b> / y·<b>TEN</b>·go·que·a·<b>CER</b>·u·na·lla·<b>MA</b>·da" },
+    scenario:{ zh:"開會中你得提早離開趕飛機，跟同事說你必須走了、得趕飛機。",
+      en:"In a meeting you must leave early—tell a colleague you have to go and catch your flight.",
+      model:"Disculpen, tengo que irme; tengo que tomar mi vuelo." }
+  },
+
+  {
+    id:"voy-a", title:"Voy a ___ .", zh:"我要去／打算 ___（近未來）",
+    goals:["日常","旅遊"],
+    pattern:"Voy a pagar con tarjeta.", patZh:"我要刷卡付款。", patEn:"I'm going to pay by card.",
+    ipa:"boi · a · pa·ˈɣaɾ · kon · taɾ·ˈxe·ta",
+    skeleton:"Voy a ___ .",
+    rhythm:"<b>VOY</b>·a·pa·<b>GAR</b>·con·tar·<b>JE</b>·ta",
+    note:"Voy a + 動詞原形 = 我要／打算…（最常用的「未來」說法，ir a + 原形）。\nEN: 'ir a' + infinitive = going to (near future).",
+    cues:[
+      {zh:"刷卡付款",en:"pay by card",a:"Voy a pagar con tarjeta.",ipa:"pa·ˈɣaɾ · kon · taɾ·ˈxe·ta"},
+      {zh:"點一杯咖啡",en:"order a coffee",a:"Voy a pedir un café.",ipa:"pe·ˈðiɾ · un · ka·ˈfe"},
+      {zh:"休息一下",en:"rest a bit",a:"Voy a descansar un poco.",ipa:"des·kan·ˈsaɾ · un · ˈpo·ko"},
+      {zh:"打給你",en:"call you",a:"Voy a llamarte.",ipa:"ʝa·ˈmaɾ·te"},
+      {zh:"出去走走",en:"go for a walk",a:"Voy a salir a caminar.",ipa:"sa·ˈliɾ · a · ka·mi·ˈnaɾ"},
+      {zh:"訂一張桌",en:"book a table",a:"Voy a reservar una mesa.",ipa:"re·seɾ·ˈβaɾ · u·na · ˈme·sa"},
+      {zh:"學西語",en:"learn Spanish",a:"Voy a aprender español.",ipa:"a·pɾen·ˈdeɾ · es·pa·ˈɲol"},
+      {zh:"買票",en:"buy the ticket",a:"Voy a comprar el boleto.",ipa:"kom·ˈpɾaɾ · el · bo·ˈle·to"},
+      {zh:"考慮一下",en:"think it over",a:"Voy a pensarlo.",ipa:"pen·ˈsaɾ·lo"},
+      {zh:"等你",en:"wait for you",a:"Voy a esperarte.",ipa:"es·pe·ˈɾaɾ·te"},
+      {zh:"試試看",en:"try it",a:"Voy a intentarlo.",ipa:"in·ten·ˈtaɾ·lo"},
+      {zh:"走了",en:"leave",a:"Voy a irme.",ipa:"ˈiɾ·me"},
+      {zh:"問一下",en:"ask",a:"Voy a preguntar.",ipa:"pɾe·ɣun·ˈtaɾ"},
+      {zh:"付帳",en:"pay the bill",a:"Voy a pagar la cuenta.",ipa:"pa·ˈɣaɾ · la · ˈkwen·ta"},
+      {zh:"確認時間",en:"confirm the time",a:"Voy a confirmar la hora.",ipa:"kon·fiɾ·ˈmaɾ · la · ˈo·ɾa"}
+    ],
+    shadow:{ text:"Voy a pedir un café, voy a descansar un poco y después voy a llamarte.",
+      zh:"我要點杯咖啡，休息一下，之後再打給你。",
+      rhythm:"<b>VOY</b>·a·pe·<b>DIR</b>·un·ca·<b>FÉ</b> / <b>VOY</b>·a·des·can·<b>SAR</b>·un·<b>PO</b>·co / y·des·<b>PUÉS</b>·<b>VOY</b>·a·lla·<b>MAR</b>·te" },
+    scenario:{ zh:"結帳時告訴店員你要刷卡，並打算晚點再回來。",
+      en:"At checkout, say you're going to pay by card and you'll come back later.",
+      model:"Voy a pagar con tarjeta, y voy a volver más tarde." }
+  },
+
+  {
+    id:"podria", title:"¿Podría ___ ?", zh:"您能不能 ___？（最禮貌請別人）",
+    goals:["旅遊","商務"],
+    pattern:"¿Podría ayudarme?", patZh:"您能幫我嗎？", patEn:"Could you help me?",
+    ipa:"po·ˈðɾi·a · a·ʝu·ˈðaɾ·me",
+    skeleton:"¿Podría ___ ?",
+    rhythm:"po·<b>DRÍ</b>·a·a·yu·<b>DAR</b>·me",
+    note:"¿Podría…? = 您能不能…？最客氣地請別人做事，後接動詞原形；比 ¿Puede…? 更禮貌。\nEN: 'Could you…?' — very polite request to someone, + infinitive.",
+    cues:[
+      {zh:"幫我",en:"help me",a:"¿Podría ayudarme?",ipa:"a·ʝu·ˈðaɾ·me"},
+      {zh:"再說一次",en:"repeat",a:"¿Podría repetir?",ipa:"re·pe·ˈtiɾ"},
+      {zh:"說慢一點",en:"speak slower",a:"¿Podría hablar más despacio?",ipa:"a·ˈβlaɾ · mas · des·ˈpa·sjo"},
+      {zh:"拿帳單來",en:"bring the bill",a:"¿Podría traer la cuenta?",ipa:"tɾa·ˈeɾ · la · ˈkwen·ta"},
+      {zh:"幫我叫計程車",en:"call me a taxi",a:"¿Podría llamarme un taxi?",ipa:"ʝa·ˈmaɾ·me · un · ˈtak·si"},
+      {zh:"寫下來",en:"write it down",a:"¿Podría escribirlo?",ipa:"es·kɾi·ˈβiɾ·lo"},
+      {zh:"等我一下",en:"wait for me",a:"¿Podría esperarme?",ipa:"es·pe·ˈɾaɾ·me"},
+      {zh:"告訴我怎麼走",en:"show me the way",a:"¿Podría indicarme el camino?",ipa:"in·di·ˈkaɾ·me · el · ka·ˈmi·no"},
+      {zh:"幫我拍張照",en:"take a photo of me",a:"¿Podría tomarme una foto?",ipa:"to·ˈmaɾ·me · u·na · ˈfo·to"},
+      {zh:"推薦個東西",en:"recommend something",a:"¿Podría recomendarme algo?",ipa:"re·ko·men·ˈdaɾ·me · ˈal·ɣo"},
+      {zh:"確認一下",en:"confirm it",a:"¿Podría confirmarlo?",ipa:"kon·fiɾ·ˈmaɾ·lo"},
+      {zh:"給我發票",en:"give me the invoice",a:"¿Podría darme la factura?",ipa:"ˈdaɾ·me · la · fak·ˈtu·ɾa"},
+      {zh:"開門",en:"open the door",a:"¿Podría abrir la puerta?",ipa:"a·ˈβɾiɾ · la · ˈpweɾ·ta"},
+      {zh:"借過",en:"let me through",a:"¿Podría dejarme pasar?",ipa:"de·ˈxaɾ·me · pa·ˈsaɾ"},
+      {zh:"等五分鐘",en:"wait five minutes",a:"¿Podría esperar cinco minutos?",ipa:"es·pe·ˈɾaɾ · ˈsiŋ·ko · mi·ˈnu·tos"}
+    ],
+    shadow:{ text:"Disculpe, ¿podría ayudarme? ¿Podría hablar más despacio, por favor?",
+      zh:"不好意思，您能幫我嗎？能請您說慢一點嗎？",
+      rhythm:"dis·<b>CUL</b>·pe / po·<b>DRÍ</b>·a·a·yu·<b>DAR</b>·me / po·<b>DRÍ</b>·a·a·<b>BLAR</b>·más·des·<b>PA</b>·cio" },
+    scenario:{ zh:"你沒聽懂櫃台說的，禮貌請對方說慢一點並寫下來。",
+      en:"You didn't catch what the clerk said—politely ask them to speak slower and write it down.",
+      model:"Perdón, ¿podría hablar más despacio? ¿Y podría escribirlo, por favor?" }
+  },
+
+  {
+    id:"hay", title:"¿Hay ___ ?", zh:"有 ___ 嗎？（詢問存在）",
+    goals:["旅遊","日常"],
+    pattern:"¿Hay wifi aquí?", patZh:"這裡有 wifi 嗎？", patEn:"Is there wifi here?",
+    ipa:"ai · ˈwi·fi · a·ˈki",
+    skeleton:"¿Hay ___ ?",
+    rhythm:"<b>HAY</b>·<b>WI</b>·fi·a·<b>QUÍ</b>",
+    note:"Hay = 有（存在）；單數複數都用 hay。¿Hay…? = 有…嗎。\nEN: 'hay' = there is / there are (same for singular & plural).",
+    cues:[
+      {zh:"wifi（這裡）",en:"wifi here",a:"¿Hay wifi aquí?",ipa:"ˈwi·fi · a·ˈki"},
+      {zh:"廁所",en:"a bathroom",a:"¿Hay baño?",ipa:"ˈba·ɲo"},
+      {zh:"空房",en:"rooms",a:"¿Hay habitaciones?",ipa:"a·βi·ta·ˈsjo·nes"},
+      {zh:"折扣",en:"a discount",a:"¿Hay descuento?",ipa:"des·ˈkwen·to"},
+      {zh:"公車",en:"a bus",a:"¿Hay autobús?",ipa:"au·to·ˈβus"},
+      {zh:"素食選項",en:"vegetarian options",a:"¿Hay opciones vegetarianas?",ipa:"op·ˈsjo·nes · be·xe·ta·ˈɾja·nas"},
+      {zh:"空桌",en:"a table",a:"¿Hay mesa?",ipa:"ˈme·sa"},
+      {zh:"什麼問題",en:"a problem",a:"¿Hay algún problema?",ipa:"al·ˈɣun · pɾo·ˈβle·ma"},
+      {zh:"附近藥局",en:"a pharmacy nearby",a:"¿Hay una farmacia cerca?",ipa:"u·na · faɾ·ˈma·sja · ˈseɾ·ka"},
+      {zh:"提款機",en:"an ATM",a:"¿Hay un cajero?",ipa:"un · ka·ˈxe·ɾo"},
+      {zh:"直達車",en:"a direct train",a:"¿Hay tren directo?",ipa:"tɾen · di·ˈɾek·to"},
+      {zh:"別的顏色",en:"another color",a:"¿Hay otro color?",ipa:"ˈo·tɾo · ko·ˈloɾ"},
+      {zh:"會說英語的人",en:"someone who speaks English",a:"¿Hay alguien que hable inglés?",ipa:"ˈal·ɣjen · ke · ˈa·βle · iŋ·ˈɡles"},
+      {zh:"附近餐廳",en:"a restaurant nearby",a:"¿Hay un restaurante cerca?",ipa:"un · res·tau·ˈɾan·te · ˈseɾ·ka"},
+      {zh:"今天有空檔",en:"availability today",a:"¿Hay disponibilidad hoy?",ipa:"dis·po·ni·βi·li·ˈðað · oi"}
+    ],
+    shadow:{ text:"Buenas, ¿hay wifi aquí? ¿Y hay una farmacia cerca?",
+      zh:"你好，這裡有 wifi 嗎？附近有藥局嗎？",
+      rhythm:"<b>BUE</b>·nas / <b>HAY</b>·<b>WI</b>·fi·a·<b>QUÍ</b> / y·<b>HAY</b>·u·na·far·<b>MA</b>·cia·<b>CER</b>·ca" },
+    scenario:{ zh:"入住飯店，問房間有沒有 wifi、附近有沒有提款機。",
+      en:"Checking in, ask if there's wifi in the room and an ATM nearby.",
+      model:"¿Hay wifi en la habitación? ¿Y hay un cajero cerca?" }
+  },
+
+  {
+    id:"me-gusta", title:"Me gusta ___ .", zh:"我喜歡 ___（喜好；否定 No me gusta）",
+    goals:["日常"],
+    pattern:"Me gusta este lugar.", patZh:"我喜歡這個地方。", patEn:"I like this place.",
+    ipa:"me · ˈɣus·ta · ˈes·te · lu·ˈɣaɾ",
+    skeleton:"Me gusta ___ .",
+    rhythm:"me·<b>GUS</b>·ta·<b>ES</b>·te·lu·<b>GAR</b>",
+    note:"Me gusta + 單數名詞／動詞原形 = 我喜歡…；複數名詞改用 Me gustan。否定：No me gusta…。\nEN: 'me gusta' + singular noun/infinitive; plural → 'me gustan'.",
+    cues:[
+      {zh:"這個地方",en:"this place",a:"Me gusta este lugar.",ipa:"ˈes·te · lu·ˈɣaɾ"},
+      {zh:"你的城市",en:"your city",a:"Me gusta tu ciudad.",ipa:"tu · sju·ˈðað"},
+      {zh:"西班牙語",en:"Spanish",a:"Me gusta el español.",ipa:"el · es·pa·ˈɲol"},
+      {zh:"這道菜",en:"this dish",a:"Me gusta este platillo.",ipa:"ˈes·te · pla·ˈti·ʝo"},
+      {zh:"旅行",en:"to travel",a:"Me gusta viajar.",ipa:"bja·ˈxaɾ"},
+      {zh:"咖啡",en:"coffee",a:"Me gusta el café.",ipa:"el · ka·ˈfe"},
+      {zh:"這首歌",en:"this song",a:"Me gusta esta canción.",ipa:"ˈes·ta · kan·ˈsjon"},
+      {zh:"不喜歡辣",en:"spicy (don't)",a:"No me gusta el picante.",ipa:"el · pi·ˈkan·te"},
+      {zh:"跳舞",en:"to dance",a:"Me gusta bailar.",ipa:"bai·ˈlaɾ"},
+      {zh:"這個主意",en:"this idea",a:"Me gusta la idea.",ipa:"la · i·ˈðe·a"},
+      {zh:"不喜歡等",en:"to wait (don't)",a:"No me gusta esperar.",ipa:"es·pe·ˈɾaɾ"},
+      {zh:"這裡的天氣",en:"the weather here",a:"Me gusta el clima aquí.",ipa:"el · ˈkli·ma · a·ˈki"},
+      {zh:"海灘",en:"the beach",a:"Me gusta la playa.",ipa:"la · ˈpla·ʝa"},
+      {zh:"不喜歡早起",en:"to get up early (don't)",a:"No me gusta madrugar.",ipa:"ma·ðɾu·ˈɣaɾ"},
+      {zh:"認識新朋友",en:"to meet new people",a:"Me gusta conocer gente nueva.",ipa:"ko·no·ˈseɾ · ˈxen·te · ˈnwe·βa"}
+    ],
+    shadow:{ text:"Me gusta mucho este lugar; me gusta la comida y me gusta la gente.",
+      zh:"我很喜歡這個地方；喜歡這裡的食物，也喜歡這裡的人。",
+      rhythm:"me·<b>GUS</b>·ta·<b>MU</b>·cho·<b>ES</b>·te·lu·<b>GAR</b> / me·<b>GUS</b>·ta·la·co·<b>MI</b>·da / y·me·<b>GUS</b>·ta·la·<b>GEN</b>·te" },
+    scenario:{ zh:"朋友問你覺得這城市如何，回答你很喜歡這裡、喜歡食物，但不喜歡天氣。",
+      en:"A friend asks how you like the city—say you like it and the food, but not the weather.",
+      model:"Me gusta mucho la ciudad; me gusta la comida, pero no me gusta el clima." }
+  },
+
+  {
+    id:"estoy", title:"Estoy ___ .", zh:"我（現在）很 ___（狀態／感受）",
+    goals:["日常","旅遊"],
+    pattern:"Estoy cansado.", patZh:"我累了。", patEn:"I'm tired.",
+    ipa:"es·ˈtoi · kan·ˈsa·ðo",
+    skeleton:"Estoy ___ .",
+    rhythm:"es·<b>TOY</b>·can·<b>SA</b>·do",
+    note:"Estoy = estar 我形，講「當下的狀態／感受／位置」。女性把形容詞 -o 改 -a（cansada）。對比 Soy（不變的身份）。\nEN: 'estoy' = I am (temporary state/feeling). Fem. adjective ends -a.",
+    cues:[
+      {zh:"累了",en:"tired",a:"Estoy cansado.",ipa:"kan·ˈsa·ðo"},
+      {zh:"準備好了",en:"ready",a:"Estoy listo.",ipa:"ˈlis·to"},
+      {zh:"迷路了",en:"lost",a:"Estoy perdido.",ipa:"peɾ·ˈði·ðo"},
+      {zh:"緊張",en:"nervous",a:"Estoy nervioso.",ipa:"neɾ·ˈβjo·so"},
+      {zh:"開心",en:"happy",a:"Estoy feliz.",ipa:"fe·ˈlis"},
+      {zh:"生病了",en:"sick",a:"Estoy enfermo.",ipa:"em·ˈfeɾ·mo"},
+      {zh:"很忙",en:"busy",a:"Estoy ocupado.",ipa:"o·ku·ˈpa·ðo"},
+      {zh:"在飯店",en:"at the hotel",a:"Estoy en el hotel.",ipa:"en · el · o·ˈtel"},
+      {zh:"很好",en:"fine / well",a:"Estoy bien.",ipa:"bjen"},
+      {zh:"擔心",en:"worried",a:"Estoy preocupado.",ipa:"pɾe·o·ku·ˈpa·ðo"},
+      {zh:"遲到了",en:"running late",a:"Estoy retrasado.",ipa:"re·tɾa·ˈsa·ðo"},
+      {zh:"在路上",en:"on the way",a:"Estoy en camino.",ipa:"en · ka·ˈmi·no"},
+      {zh:"很期待",en:"excited",a:"Estoy emocionado.",ipa:"e·mo·sjo·ˈna·ðo"},
+      {zh:"有空",en:"free / available",a:"Estoy libre.",ipa:"ˈli·βɾe"},
+      {zh:"快好了",en:"almost ready",a:"Estoy casi listo.",ipa:"ˈka·si · ˈlis·to"}
+    ],
+    shadow:{ text:"Estoy bien, gracias, pero estoy un poco cansado y estoy con prisa.",
+      zh:"我很好謝謝，不過有點累，還趕時間。",
+      rhythm:"es·<b>TOY</b>·<b>BIEN</b>·<b>GRA</b>·cias / pe·ro·es·<b>TOY</b>·un·<b>PO</b>·co·can·<b>SA</b>·do / y·es·<b>TOY</b>·con·<b>PRI</b>·sa" },
+    scenario:{ zh:"朋友打來問你好不好、在哪，回答你很好、在路上、但有點趕。",
+      en:"A friend calls asking how you are and where—say you're fine, on the way, but a bit rushed.",
+      model:"Estoy bien, estoy en camino, pero estoy un poco apurado." }
+  },
+
+  {
+    id:"soy", title:"Soy ___ .", zh:"我是 ___（身份／來自／職業）",
+    goals:["商務","日常"],
+    pattern:"Soy de Taiwán.", patZh:"我來自台灣。", patEn:"I'm from Taiwan.",
+    ipa:"soi · ðe · tai·ˈwan",
+    skeleton:"Soy ___ .",
+    rhythm:"<b>SOY</b>·de·tai·<b>WÁN</b>",
+    note:"Soy = ser 我形，講「不變的身份／本質」：來自哪、職業、是誰。對比 Estoy（暫時狀態）。\nEN: 'soy' = I am (permanent identity: origin, profession). Contrast 'estoy'.",
+    cues:[
+      {zh:"來自台灣",en:"from Taiwan",a:"Soy de Taiwán.",ipa:"de · tai·ˈwan"},
+      {zh:"學生",en:"a student",a:"Soy estudiante.",ipa:"es·tu·ˈðjan·te"},
+      {zh:"工程師",en:"an engineer",a:"Soy ingeniero.",ipa:"in·xe·ˈnje·ɾo"},
+      {zh:"觀光客",en:"a tourist",a:"Soy turista.",ipa:"tu·ˈɾis·ta"},
+      {zh:"新來的",en:"new here",a:"Soy nuevo aquí.",ipa:"ˈnwe·βo · a·ˈki"},
+      {zh:"老師",en:"a teacher",a:"Soy profesor.",ipa:"pɾo·fe·ˈsoɾ"},
+      {zh:"素食者",en:"vegetarian",a:"Soy vegetariano.",ipa:"be·xe·ta·ˈɾja·no"},
+      {zh:"你的朋友",en:"your friend",a:"Soy tu amigo.",ipa:"tu · a·ˈmi·ɣo"},
+      {zh:"醫生",en:"a doctor",a:"Soy médico.",ipa:"ˈme·ði·ko"},
+      {zh:"負責人",en:"the person in charge",a:"Soy el responsable.",ipa:"el · res·pon·ˈsa·βle"},
+      {zh:"來自美國",en:"from the US",a:"Soy de Estados Unidos.",ipa:"de · es·ˈta·ðos · u·ˈni·ðos"},
+      {zh:"經理",en:"a manager",a:"Soy gerente.",ipa:"xe·ˈɾen·te"},
+      {zh:"初學者",en:"a beginner",a:"Soy principiante.",ipa:"pɾin·si·ˈpjan·te"},
+      {zh:"你的導遊",en:"your guide",a:"Soy tu guía.",ipa:"tu · ˈɡi·a"},
+      {zh:"說中文的人",en:"a Chinese speaker",a:"Soy hablante de chino.",ipa:"a·ˈβlan·te · ðe · ˈtʃi·no"}
+    ],
+    shadow:{ text:"Hola, soy de Taiwán, soy ingeniero y soy nuevo aquí.",
+      zh:"你好，我來自台灣，是工程師，剛來這裡。",
+      rhythm:"<b>HO</b>·la / <b>SOY</b>·de·tai·<b>WÁN</b> / <b>SOY</b>·in·ge·<b>NIE</b>·ro / y·<b>SOY</b>·<b>NUE</b>·vo·a·<b>QUÍ</b>" },
+    scenario:{ zh:"第一天上班，跟新同事自我介紹：你來自哪、做什麼的。",
+      en:"First day at work—introduce yourself: where you're from and your job.",
+      model:"Mucho gusto, soy de Taiwán y soy ingeniero." }
+  },
+
+  {
+    id:"creo", title:"Creo que ___ .", zh:"我覺得／認為 ___（表達意見）",
+    goals:["日常","商務"],
+    pattern:"Creo que sí.", patZh:"我想是的。", patEn:"I think so.",
+    ipa:"ˈkɾe·o · ke · si",
+    skeleton:"Creo que ___ .",
+    rhythm:"<b>CRE</b>·o·que·<b>SÍ</b>",
+    note:"Creo que + 句子 = 我覺得／認為…。表達看法、意見。\nEN: 'creo que' + clause = I think that…",
+    cues:[
+      {zh:"是的",en:"so / yes",a:"Creo que sí.",ipa:"si"},
+      {zh:"不是",en:"not",a:"Creo que no.",ipa:"no"},
+      {zh:"這個比較好",en:"this one's better",a:"Creo que este es mejor.",ipa:"ˈes·te · es · me·ˈxoɾ"},
+      {zh:"太貴了",en:"it's too expensive",a:"Creo que es muy caro.",ipa:"es · mui · ˈka·ɾo"},
+      {zh:"你說得對",en:"you're right",a:"Creo que tienes razón.",ipa:"ˈtje·nes · ra·ˈson"},
+      {zh:"會下雨",en:"it'll rain",a:"Creo que va a llover.",ipa:"ba · a · ʝo·ˈβeɾ"},
+      {zh:"我們迷路了",en:"we're lost",a:"Creo que estamos perdidos.",ipa:"es·ˈta·mos · peɾ·ˈði·ðos"},
+      {zh:"關門了",en:"it's closed",a:"Creo que está cerrado.",ipa:"es·ˈta · se·ˈra·ðo"},
+      {zh:"還有時間",en:"there's still time",a:"Creo que todavía hay tiempo.",ipa:"to·ða·ˈβi·a · ai · ˈtjem·po"},
+      {zh:"是個好主意",en:"it's a good idea",a:"Creo que es buena idea.",ipa:"es · ˈbwe·na · i·ˈðe·a"},
+      {zh:"我遲到了",en:"I'm late",a:"Creo que llegué tarde.",ipa:"ʝe·ˈɣe · ˈtaɾ·ðe"},
+      {zh:"我需要幫忙",en:"I need help",a:"Creo que necesito ayuda.",ipa:"ne·se·ˈsi·to · a·ˈʝu·ða"},
+      {zh:"夠了",en:"it's enough",a:"Creo que es suficiente.",ipa:"es · su·fi·ˈsjen·te"},
+      {zh:"走錯路了",en:"it's the wrong way",a:"Creo que es el camino equivocado.",ipa:"el · ka·ˈmi·no · e·ki·βo·ˈka·ðo"},
+      {zh:"我們該走了",en:"we should go",a:"Creo que debemos irnos.",ipa:"de·ˈβe·mos · ˈiɾ·nos"}
+    ],
+    shadow:{ text:"Creo que sí, pero creo que es muy caro; creo que hay otra opción.",
+      zh:"我想是的，不過我覺得太貴了；我覺得有別的選擇。",
+      rhythm:"<b>CRE</b>·o·que·<b>SÍ</b> / pe·ro·<b>CRE</b>·o·que·es·muy·<b>CA</b>·ro / <b>CRE</b>·o·que·<b>HAY</b>·o·tra·op·<b>CIÓN</b>" },
+    scenario:{ zh:"朋友問要不要買這個，表達你覺得太貴、覺得有更好的選擇。",
+      en:"A friend asks whether to buy it—say you think it's too expensive and there's a better option.",
+      model:"Creo que es muy caro; creo que hay una mejor opción." }
   }
 ];
 
@@ -479,6 +750,14 @@ const CURRICULUM = [
 CURRICULUM.forEach(L=>L.cues.forEach((c,i)=>c.id=L.id+":"+i));
 const LESSON_BY_ID={}; CURRICULUM.forEach(L=>LESSON_BY_ID[L.id]=L);
 const CUE_BY_ID={}; CURRICULUM.forEach(L=>L.cues.forEach(c=>CUE_BY_ID[c.id]={cue:c,lesson:L}));
+
+/* ---------- MODULES / 板块 (group lessons by language function) ---------- */
+const MODULES = [
+  { id:"want", emoji:"🗣️", title:"要東西・表意願", en:"Wants · Requests · Intentions",
+    lessons:["quiero","gustaria","necesito","puedo","tengo-que","voy-a","podria"] },
+  { id:"ask",  emoji:"🔎", title:"問問題・描述世界", en:"Asking · Existence · Describing",
+    lessons:["donde","cuanto","hay","me-gusta","estoy","soy","creo"] }
+];
 
 /* ---------- Persistence ---------- */
 const KEY="vamos_v1";
@@ -562,25 +841,31 @@ function renderHome(){
   const acc = store.stats.totalReps? Math.round(100*store.stats.totalCorrect/store.stats.totalReps):null;
   $("stAcc").textContent = acc==null? "—" : acc+"%";
   $("dueBadge").textContent = "複習 "+dueCount();
-  // lessons
+  // lessons grouped by module / 板块
   const list=$("lessonList"); list.innerHTML="";
-  CURRICULUM.forEach((L,i)=>{
-    const lp = store.lessons[L.id]||{};
-    const best = lp.bestReps||0;
-    const pct = Math.min(100, Math.round(100*best/20));
-    const due = L.cues.filter(c=>{const s=store.srs[c.id]; return s && s.due<=Date.now();}).length;
-    const el=document.createElement("div"); el.className="lcard";
-    el.innerHTML=`
-      <div class="lnum">${i+1}</div>
-      <div class="lbody">
-        <div class="lpat">${L.title}</div>
-        <div class="lzh">${L.zh}</div>
-        <div class="tags">${L.goals.map(g=>`<span class="tag">${g}</span>`).join("")}${due?`<span class="tag rev">🔁 複習 ${due}</span>`:""}${lp.done?`<span class="tag">✓ 已通關</span>`:""}</div>
-        <div class="bar"><i style="width:${pct}%"></i></div>
-        <div class="lprog">最佳 ${best}/20 reps</div>
-      </div>`;
-    el.onclick=()=>startLesson(L.id);
-    list.appendChild(el);
+  MODULES.forEach(mod=>{
+    const head=document.createElement("div"); head.className="modhead";
+    head.innerHTML=`<span class="emoji">${mod.emoji}</span><h2>${mod.title}</h2><span class="en">${mod.en}</span><span class="cnt">${mod.lessons.length} 課</span>`;
+    list.appendChild(head);
+    mod.lessons.forEach((lid,idx)=>{
+      const L=LESSON_BY_ID[lid]; if(!L) return;
+      const lp = store.lessons[L.id]||{};
+      const best = lp.bestReps||0;
+      const pct = Math.min(100, Math.round(100*best/20));
+      const due = L.cues.filter(c=>{const s=store.srs[c.id]; return s && s.due<=Date.now();}).length;
+      const el=document.createElement("div"); el.className="lcard";
+      el.innerHTML=`
+        <div class="lnum">${idx+1}</div>
+        <div class="lbody">
+          <div class="lpat">${L.title}</div>
+          <div class="lzh">${L.zh}</div>
+          <div class="tags">${L.goals.map(g=>`<span class="tag">${g}</span>`).join("")}${due?`<span class="tag rev">🔁 複習 ${due}</span>`:""}${lp.done?`<span class="tag">✓ 已通關</span>`:""}</div>
+          <div class="bar"><i style="width:${pct}%"></i></div>
+          <div class="lprog">最佳 ${best}/20 reps</div>
+        </div>`;
+      el.onclick=()=>startLesson(L.id);
+      list.appendChild(el);
+    });
   });
 }
 function dueCount(){ const n=Date.now(); return Object.values(store.srs).filter(s=>s.due<=n).length; }
