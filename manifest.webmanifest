@@ -1,0 +1,28 @@
+{
+  "name": "¡Vamos! 拉美西語特訓營",
+  "short_name": "¡Vamos!",
+  "description": "FSI Pattern-Drill 訓練：回音、替換、影子、情境、SRS 間隔複習。拉丁美洲西班牙語。",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff7f2",
+  "theme_color": "#e8552d",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23e8552d'/%3E%3Ctext x='96' y='132' font-size='110' text-anchor='middle'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23e8552d'/%3E%3Ctext x='256' y='352' font-size='300' text-anchor='middle'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

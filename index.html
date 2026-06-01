@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es-419">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#e8552d" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>¡Vamos! 拉美西語特訓營</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e8552d'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle'%3E%F0%9F%87%B2%F0%9F%87%BD%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e8552d'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg:#fff7f2; --bg2:#ffffff; --ink:#2a1a12; --muted:#8a7468; --line:#f0e2d8;
+  --brand:#e8552d; --brand2:#f4a300; --good:#1f9d6b; --bad:#d6443a; --info:#2d6ee8;
+  --card:#ffffff; --shadow:0 8px 28px rgba(120,60,30,.10); --radius:20px;
+  --slot:#fff0e9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#17110d; --bg2:#1f1812; --ink:#f6ece4; --muted:#b39e90; --line:#312418;
+         --card:#221a13; --slot:#2c1f15; --shadow:0 8px 28px rgba(0,0,0,.45); }
+}
+:root[data-theme="dark"]{ --bg:#17110d; --bg2:#1f1812; --ink:#f6ece4; --muted:#b39e90; --line:#312418;
+       --card:#221a13; --slot:#2c1f15; --shadow:0 8px 28px rgba(0,0,0,.45); }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",
+    "Noto Sans TC",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); overscroll-behavior:none;
+  line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+#app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}
+.view{display:none;flex:1;flex-direction:column;animation:fade .25s ease}
+.view.active{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Top bar */
+.topbar{display:flex;align-items:center;gap:10px;padding:14px 16px 8px}
+.brand{font-weight:800;font-size:18px;letter-spacing:.3px}
+.brand .fire{filter:saturate(1.2)}
+.spacer{flex:1}
+.iconbtn{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  width:40px;height:40px;display:grid;place-items:center;font-size:18px;cursor:pointer;color:var(--ink)}
+.pill{font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;background:var(--slot);color:var(--brand)}
+
+/* Home */
+.hero{padding:6px 16px 4px}
+.hero h1{font-size:23px;margin:6px 0 2px;font-weight:800}
+.hero p{margin:0;color:var(--muted);font-size:13.5px}
+.streak{display:flex;gap:8px;margin:12px 16px 2px}
+.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:22px;color:var(--brand)}
+.stat span{font-size:11.5px;color:var(--muted)}
+.sectitle{padding:18px 16px 6px;font-size:13px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.lessons{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.lcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;
+  box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform .08s}
+.lcard:active{transform:scale(.985)}
+.lnum{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:21px;flex:none;
+  background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;font-weight:800;box-shadow:0 4px 12px rgba(232,85,45,.35)}
+.lbody{flex:1;min-width:0}
+.lpat{font-weight:800;font-size:16px}
+.lzh{color:var(--muted);font-size:13px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--slot);color:var(--brand)}
+.tag.rev{background:rgba(45,110,232,.12);color:var(--info)}
+.lprog{font-size:11px;color:var(--muted);margin-top:6px}
+.bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0}
+
+/* Lesson screen */
+.lesson-top{display:flex;align-items:center;gap:10px;padding:12px 16px 6px}
+.back{font-size:22px;cursor:pointer;color:var(--ink);padding:4px}
+.ltitle{font-weight:800;font-size:16px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.repcount{font-size:12px;font-weight:800;color:var(--brand);background:var(--slot);padding:6px 10px;border-radius:999px;white-space:nowrap}
+.progwrap{padding:0 16px}
+.progwrap .bar{height:7px}
+
+.stage{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 16px 16px;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 18px}
+.phaselabel{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+  color:#fff;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+.pl-echo{background:var(--info)} .pl-drill{background:var(--brand)} .pl-shadow{background:#8a4fd6} .pl-output{background:var(--good)}
+.es{font-size:27px;font-weight:800;letter-spacing:.2px;line-height:1.3}
+.es.small{font-size:22px}
+.ipa{color:var(--muted);font-size:15px;margin-top:8px;font-family:"Times New Roman",serif;letter-spacing:.3px}
+.gloss{margin-top:10px;font-size:14.5px}
+.gloss .zh{font-weight:600}
+.gloss .en{color:var(--muted);font-size:13.5px}
+.rhythm{margin-top:14px;font-size:18px;font-weight:700;color:var(--brand);letter-spacing:.5px;line-height:1.9}
+.rhythm b{color:var(--brand2)}
+.note{margin-top:14px;background:var(--slot);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink);white-space:pre-line}
+.note .lbl{font-weight:800;color:var(--brand);font-size:11.5px;letter-spacing:.4px}
+
+/* slot / cue */
+.skeleton{font-size:18px;color:var(--muted);margin-bottom:6px}
+.skeleton u{color:var(--brand);text-decoration:none;background:var(--slot);padding:2px 14px;border-radius:8px;font-weight:800}
+.cueprompt{font-size:34px;font-weight:800;margin:2px 0 2px;line-height:1.2}
+.cueen{color:var(--muted);font-size:16px}
+.instr{color:var(--muted);font-size:13px;margin-top:10px}
+
+/* countdown ring */
+.ringwrap{display:grid;place-items:center;margin:6px 0 2px;position:relative}
+.ring{transform:rotate(-90deg)}
+.ring .track{fill:none;stroke:var(--line);stroke-width:9}
+.ring .prog{fill:none;stroke:var(--brand);stroke-width:9;stroke-linecap:round;transition:stroke .2s}
+.ringnum{position:absolute;font-size:30px;font-weight:800;color:var(--ink)}
+.ringnum small{font-size:14px;color:var(--muted);font-weight:600}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
+  font-weight:800;font-size:17px;border-radius:16px;padding:16px;width:100%;color:#fff;
+  background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 16px rgba(232,85,45,.3);
+  transition:transform .07s,filter .1s;font-family:inherit}
+.btn:active{transform:scale(.98)}
+.btn.huge{font-size:20px;padding:22px}
+.btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.btn.good{background:linear-gradient(135deg,#1f9d6b,#27b87f);box-shadow:0 6px 16px rgba(31,157,107,.3)}
+.btn.bad{background:linear-gradient(135deg,#d6443a,#e8694f);box-shadow:0 6px 16px rgba(214,68,58,.3)}
+.btn.audio{background:var(--info);box-shadow:0 6px 16px rgba(45,110,232,.3)}
+.btnrow{display:flex;gap:10px}
+.btnrow .btn{flex:1}
+.mini{font-size:13px;color:var(--muted);text-align:center;background:none;border:none;cursor:pointer;padding:10px;font-family:inherit;width:100%}
+.mini u{color:var(--brand)}
+
+/* slow overlay */
+.slow{position:fixed;inset:0;background:rgba(214,68,58,.94);color:#fff;display:none;
+  flex-direction:column;align-items:center;justify-content:center;z-index:40;text-align:center;padding:30px;animation:pop .25s}
+.slow.show{display:flex}
+.slow .big{font-size:34px;font-weight:900;margin-bottom:6px}
+.slow .es2{font-size:22px;font-weight:800;opacity:.95}
+.slow .sub{font-size:15px;opacity:.9;margin-top:8px}
+@keyframes pop{from{transform:scale(1.15);opacity:0}to{transform:none;opacity:1}}
+@keyframes shake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(4px)}50%{transform:translateX(-6px)}}
+.shake{animation:shake .4s}
+
+/* reveal correctness */
+.reveal{animation:fade .2s}
+.tickbig{font-size:46px;text-align:center;margin-bottom:4px}
+
+/* settings */
+.set-list{padding:8px 16px 24px;display:flex;flex-direction:column;gap:10px}
+.set{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.set h3{margin:0 0 4px;font-size:15px}
+.set p{margin:0 0 10px;font-size:12.5px;color:var(--muted)}
+.set label.row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;padding:6px 0}
+input[type=range]{width:150px;accent-color:var(--brand)}
+select{font-family:inherit;font-size:14px;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);max-width:200px}
+.switch{position:relative;width:50px;height:30px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:var(--line);border-radius:999px;transition:.2s}
+.slider:before{content:"";position:absolute;height:24px;width:24px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+.slider{background:var(--brand)}
+.switch input:checked+.slider:before{transform:translateX(20px)}
+.valnum{font-weight:800;color:var(--brand);min-width:42px;text-align:right}
+
+.onboard{padding:0 16px}
+.step{display:flex;gap:12px;margin:14px 0}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--slot);color:var(--brand);font-weight:800;display:grid;place-items:center;flex:none}
+.step b{font-size:15px}
+.step p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+
+.hidden{display:none!important}
+.footer{padding:10px 16px calc(16px + env(safe-area-inset-bottom));color:var(--muted);font-size:11px;text-align:center}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== HOME ===================== -->
+  <section id="view-home" class="view active">
+    <div class="topbar">
+      <div class="brand"><span class="fire">🔥</span> ¡Vamos!</div>
+      <div class="spacer"></div>
+      <div class="pill" id="dueBadge">複習 0</div>
+      <button class="iconbtn" id="btnSettings" title="設定">⚙️</button>
+    </div>
+    <div class="hero">
+      <h1>拉美西語特訓營 🇲🇽</h1>
+      <p>FSI Pattern Drill · 回音 → 替換 → 影子 → 情境 · 內建 SRS 間隔複習</p>
+    </div>
+    <div class="streak">
+      <div class="stat"><b id="stStreak">0</b><span>連續天數 Racha</span></div>
+      <div class="stat"><b id="stReps">0</b><span>總練習 Reps</span></div>
+      <div class="stat"><b id="stAcc">—</b><span>正確率 Precisión</span></div>
+    </div>
+    <div class="sectitle">選一個語塊開練 · Elige un patrón</div>
+    <div class="lessons" id="lessonList"></div>
+    <div class="footer">提示：點右上 ⚙️ 可調語速、3 秒門檻、發音聲音。<br/>離線可用 · 進度存在本機。¡Mucho éxito! 💪</div>
+  </section>
+
+  <!-- ===================== LESSON ===================== -->
+  <section id="view-lesson" class="view">
+    <div class="lesson-top">
+      <span class="back" id="btnBack">←</span>
+      <span class="ltitle" id="lessonTitle"></span>
+      <span class="repcount" id="repCount">0 / 20</span>
+    </div>
+    <div class="progwrap"><div class="bar"><i id="lessonBar"></i></div></div>
+    <div class="stage" id="stage"></div>
+  </section>
+
+  <!-- ===================== SETTINGS ===================== -->
+  <section id="view-settings" class="view">
+    <div class="lesson-top">
+      <span class="back" id="btnBack2">←</span>
+      <span class="ltitle">設定 · Ajustes</span>
+    </div>
+    <div class="set-list">
+      <div class="set">
+        <h3>🗣️ 發音聲音 · Voz</h3>
+        <p>選一個拉美西語聲音（es-MX / es-US 最自然）。Web Speech 提供，視裝置而定。</p>
+        <label class="row">聲音 Voice <select id="voiceSel"></select></label>
+        <label class="row">語速 Velocidad <span><input type="range" id="rateSel" min="0.5" max="1.1" step="0.05"><span class="valnum" id="rateVal"></span></span></label>
+        <button class="btn audio" id="testVoice" style="margin-top:8px">🔊 試聽 ¡Hola! Quiero un café.</button>
+      </div>
+      <div class="set">
+        <h3>⏱️ 反應門檻 · Límite</h3>
+        <p>替換練習的計時上限。超過就「太慢了！」並重複提示。FSI 標準為 3 秒。</p>
+        <label class="row">秒數 Segundos <span><input type="range" id="thSel" min="2" max="8" step="0.5"><span class="valnum" id="thVal"></span></span></label>
+      </div>
+      <div class="set">
+        <h3>🎙️ 語音作答（實驗）· Reconocimiento</h3>
+        <p>開啟後用「說」的作答，App 會自動聽你的西語並判斷對錯（需 Chrome/Android、需網路與麥克風權限）。預設用「點擊自評」更穩定。</p>
+        <label class="row">語音自動評分 <span class="switch"><input type="checkbox" id="srToggle"><span class="slider"></span></span></label>
+        <div id="srUnsupported" class="note hidden"><span class="lbl">提示</span> 此瀏覽器不支援語音辨識，已維持點擊自評模式。</div>
+      </div>
+      <div class="set">
+        <h3>🎨 主題 · Tema</h3>
+        <label class="row">外觀 <select id="themeSel"><option value="auto">跟隨系統 Auto</option><option value="light">淺色 Claro</option><option value="dark">深色 Oscuro</option></select></label>
+      </div>
+      <div class="set">
+        <h3>♻️ 重設 · Reiniciar</h3>
+        <p>清除所有進度與 SRS 記錄。無法復原。</p>
+        <button class="btn bad" id="resetBtn">清除所有進度</button>
+      </div>
+      <div class="set">
+        <h3>📖 學習法說明 · Método FSI</h3>
+        <div class="onboard">
+          <div class="step"><div class="n">1</div><div><b>回音法 Echo</b><p>聽母語發音與音標，跟著讀出來，建立耳朵與肌肉記憶。</p></div></div>
+          <div class="step"><div class="n">2</div><div><b>替換練習 Substitution</b><p>看提示詞，3 秒內把完整句子說出來。慢了就重來，逼出自動化反應。</p></div></div>
+          <div class="step"><div class="n">3</div><div><b>影子練習 Shadowing</b><p>每 5 次，跟讀一段流暢語音，模仿母語節奏與連音。</p></div></div>
+          <div class="step"><div class="n">4</div><div><b>情境輸出 Output</b><p>滿 20 次，給你真實情境即興造句，把句型變成你的。</p></div></div>
+          <div class="step"><div class="n">5</div><div><b>間隔複習 SRS</b><p>新練習中隨機穿插舊提示詞，測試並鞏固長期記憶。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- slow overlay -->
+<div class="slow" id="slowOverlay">
+  <div class="big">⏱️ 太慢了！加快速度！</div>
+  <div class="es2">¡Muy lento! ¡Más rápido!</div>
+  <div class="sub">同一個提示詞，再來一次 · Otra vez</div>
+</div>
+
+<script>
+/* ============================================================
+   ¡Vamos! — 拉美西語 FSI Pattern-Drill 訓練 App
+   Single-file. No dependencies. Progress in localStorage.
+   ============================================================ */
+
+const $=id=>document.getElementById(id);
+
+/* ---------- CURRICULUM (Latin American Spanish) ---------- */
+const CURRICULUM = [
+  {
+    id:"quiero", title:"Quiero ___ , por favor.", zh:"我要 ___（直接、點餐／要求）",
+    goals:["旅遊","日常"],
+    pattern:"Quiero un café, por favor.", patZh:"我要一杯咖啡，謝謝。", patEn:"I want a coffee, please.",
+    ipa:"ˈkje·ɾo · un · ka·ˈfe · poɾ · fa·ˈβoɾ",
+    skeleton:"Quiero ___ , por favor.",
+    rhythm:"<b>QUIE</b>·ro · un · ka·<b>FÉ</b> · por · fa·<b>VOR</b>",
+    note:"「Quiero」= querer（要／想要）的「我」形，後面直接接 名詞 或 動詞原形。最直接的要求說法；加「por favor」更有禮。\nEN: 'Quiero' = I want. Follow with a noun or an infinitive. Add 'por favor' to be polite.",
+    cues:[
+      {zh:"水",en:"water",a:"Quiero agua, por favor.",ipa:"ˈkje·ɾo · ˈa·ɣwa"},
+      {zh:"一杯茶",en:"a tea",a:"Quiero un té, por favor.",ipa:"ˈkje·ɾo · un · te"},
+      {zh:"帳單",en:"the bill",a:"Quiero la cuenta, por favor.",ipa:"la · ˈkwen·ta"},
+      {zh:"兩瓶啤酒",en:"two beers",a:"Quiero dos cervezas, por favor.",ipa:"dos · seɾ·ˈβe·sas"},
+      {zh:"菜單",en:"the menu",a:"Quiero el menú, por favor.",ipa:"el · me·ˈnu"},
+      {zh:"一張兩人桌",en:"a table for two",a:"Quiero una mesa para dos, por favor.",ipa:"ˈu·na · ˈme·sa · ˈpa·ɾa · dos"},
+      {zh:"加奶咖啡",en:"coffee with milk",a:"Quiero un café con leche, por favor.",ipa:"ka·ˈfe · kon · ˈle·tʃe"},
+      {zh:"房間鑰匙",en:"the key",a:"Quiero la llave, por favor.",ipa:"la · ˈʝa·βe"},
+      {zh:"用卡付款",en:"to pay by card",a:"Quiero pagar con tarjeta, por favor.",ipa:"pa·ˈɣaɾ · kon · taɾ·ˈxe·ta"},
+      {zh:"訂一間房",en:"to book a room",a:"Quiero reservar una habitación, por favor.",ipa:"re·seɾ·ˈβaɾ · u·na · a·βi·ta·ˈsjon"},
+      {zh:"一張去Cancún的票",en:"a ticket to Cancún",a:"Quiero un boleto a Cancún, por favor.",ipa:"un · bo·ˈle·to · a · kaŋ·ˈkun"},
+      {zh:"無氣泡水",en:"still water",a:"Quiero agua sin gas, por favor.",ipa:"ˈa·ɣwa · sin · ɡas"},
+      {zh:"兩個 taco",en:"two tacos",a:"Quiero dos tacos, por favor.",ipa:"dos · ˈta·kos"},
+      {zh:"wifi 密碼",en:"the wifi password",a:"Quiero la contraseña del wifi, por favor.",ipa:"la · kon·tɾa·ˈse·ɲa · del · ˈwi·fi"},
+      {zh:"更多餐巾",en:"more napkins",a:"Quiero más servilletas, por favor.",ipa:"mas · seɾ·βi·ˈʝe·tas"},
+      {zh:"一杯計程車",en:"a taxi",a:"Quiero un taxi, por favor.",ipa:"un · ˈtak·si"}
+    ],
+    shadow:{ text:"Quiero un café, quiero un té, y quiero también un vaso de agua, por favor.",
+      zh:"我要一杯咖啡，我要一杯茶，還要一杯水，謝謝。",
+      rhythm:"<b>QUIE</b>·ro·un·ca·<b>FÉ</b> / <b>QUIE</b>·ro·un·<b>TÉ</b> / y·<b>QUIE</b>·ro·tam·<b>BIÉN</b>·un·<b>VA</b>·so·de·<b>A</b>·gua / por·fa·<b>VOR</b>" },
+    scenario:{ zh:"你在墨西哥城一家咖啡館，想點「一杯加奶咖啡」和「兩個可頌」。用 Quiero 開口。",
+      en:"You're at a café in Mexico City. Order a coffee with milk and two croissants.",
+      model:"Quiero un café con leche y dos cruasanes, por favor." }
+  },
+
+  {
+    id:"donde", title:"¿Dónde está ___ ?", zh:"___ 在哪裡？（問路／找東西）",
+    goals:["旅遊","日常"],
+    pattern:"¿Dónde está el baño?", patZh:"廁所在哪裡？", patEn:"Where is the bathroom?",
+    ipa:"ˈdon·de · es·ˈta · el · ˈba·ɲo",
+    skeleton:"¿Dónde está ___ ?",
+    rhythm:"<b>DÓN</b>·de · es·<b>TÁ</b> · el · <b>BA</b>·ño",
+    note:"問位置用 estar（不是 ser）。「está」是第三人稱單數。注意西語問句前要加倒問號 ¿。名詞前的 el/la 看陰陽性。\nEN: Use 'estar' for location. 'está' = is. Spanish opens questions with ¿.",
+    cues:[
+      {zh:"廁所",en:"the bathroom",a:"¿Dónde está el baño?",ipa:"el · ˈba·ɲo"},
+      {zh:"出口",en:"the exit",a:"¿Dónde está la salida?",ipa:"la · sa·ˈli·ða"},
+      {zh:"地鐵",en:"the subway",a:"¿Dónde está el metro?",ipa:"el · ˈme·tɾo"},
+      {zh:"車站",en:"the station",a:"¿Dónde está la estación?",ipa:"la · es·ta·ˈsjon"},
+      {zh:"旅館",en:"the hotel",a:"¿Dónde está el hotel?",ipa:"el · o·ˈtel"},
+      {zh:"公車站",en:"the bus stop",a:"¿Dónde está la parada del autobús?",ipa:"la · pa·ˈɾa·ða · del · au·to·ˈβus"},
+      {zh:"機場",en:"the airport",a:"¿Dónde está el aeropuerto?",ipa:"el · a·e·ɾo·ˈpweɾ·to"},
+      {zh:"提款機 ATM",en:"the ATM",a:"¿Dónde está el cajero?",ipa:"el · ka·ˈxe·ɾo"},
+      {zh:"藥局",en:"the pharmacy",a:"¿Dónde está la farmacia?",ipa:"la · faɾ·ˈma·sja"},
+      {zh:"餐廳",en:"the restaurant",a:"¿Dónde está el restaurante?",ipa:"el · res·tau·ˈɾan·te"},
+      {zh:"我的行李箱",en:"my suitcase",a:"¿Dónde está mi maleta?",ipa:"mi · ma·ˈle·ta"},
+      {zh:"櫃台",en:"the reception",a:"¿Dónde está la recepción?",ipa:"la · re·sep·ˈsjon"},
+      {zh:"市中心",en:"downtown",a:"¿Dónde está el centro?",ipa:"el · ˈsen·tɾo"},
+      {zh:"超市",en:"the supermarket",a:"¿Dónde está el supermercado?",ipa:"el · su·peɾ·meɾ·ˈka·ðo"},
+      {zh:"會議室",en:"the meeting room",a:"¿Dónde está la sala de juntas?",ipa:"la · ˈsa·la · de · ˈxun·tas"},
+      {zh:"電梯",en:"the elevator",a:"¿Dónde está el elevador?",ipa:"el · e·le·βa·ˈðoɾ"}
+    ],
+    shadow:{ text:"Perdón, ¿dónde está el metro? ¿Y dónde está la salida más cercana?",
+      zh:"不好意思，地鐵在哪？最近的出口又在哪？",
+      rhythm:"per·<b>DÓN</b> / <b>DÓN</b>·de·es·<b>TÁ</b>·el·<b>ME</b>·tro / y·<b>DÓN</b>·de·es·<b>TÁ</b>·la·sa·<b>LI</b>·da·más·cer·<b>CA</b>·na" },
+    scenario:{ zh:"你剛下飛機，想問「廁所在哪」以及「計程車站在哪」。",
+      en:"You just landed. Ask where the bathroom is, and where the taxi stand is.",
+      model:"Perdón, ¿dónde está el baño? ¿Y dónde está la parada de taxis?" }
+  },
+
+  {
+    id:"cuanto", title:"¿Cuánto cuesta ___ ?", zh:"___ 多少錢？（購物／殺價）",
+    goals:["旅遊","日常"],
+    pattern:"¿Cuánto cuesta esto?", patZh:"這個多少錢？", patEn:"How much does this cost?",
+    ipa:"ˈkwan·to · ˈkwes·ta · ˈes·to",
+    skeleton:"¿Cuánto cuesta ___ ?",
+    rhythm:"<b>CUÁN</b>·to · <b>CUES</b>·ta · <b>ES</b>·to",
+    note:"cuánto = 多少；cuesta 是 costar（花費）第三人稱。若問複數（東西不只一個）動詞變 cuestan。初學先記單數 chunk 即可。\nEN: For plural items it becomes 'cuestan'. Keep the singular chunk for now.",
+    cues:[
+      {zh:"這個",en:"this",a:"¿Cuánto cuesta esto?",ipa:"ˈes·to"},
+      {zh:"門票",en:"the admission",a:"¿Cuánto cuesta la entrada?",ipa:"la · en·ˈtɾa·ða"},
+      {zh:"車票",en:"the ticket",a:"¿Cuánto cuesta el boleto?",ipa:"el · bo·ˈle·to"},
+      {zh:"住一晚",en:"one night",a:"¿Cuánto cuesta una noche?",ipa:"ˈu·na · ˈno·tʃe"},
+      {zh:"到市中心的計程車",en:"the taxi downtown",a:"¿Cuánto cuesta el taxi al centro?",ipa:"el · ˈtak·si · al · ˈsen·tɾo"},
+      {zh:"這件襯衫",en:"this shirt",a:"¿Cuánto cuesta esta camisa?",ipa:"ˈes·ta · ka·ˈmi·sa"},
+      {zh:"早餐",en:"breakfast",a:"¿Cuánto cuesta el desayuno?",ipa:"el · de·sa·ˈʝu·no"},
+      {zh:"一公斤橘子",en:"a kilo of oranges",a:"¿Cuánto cuesta un kilo de naranjas?",ipa:"un · ˈki·lo · de · na·ˈɾaŋ·xas"},
+      {zh:"這個導覽團",en:"the tour",a:"¿Cuánto cuesta el tour?",ipa:"el · tuɾ"},
+      {zh:"運費",en:"the shipping",a:"¿Cuánto cuesta el envío?",ipa:"el · em·ˈbi·o"},
+      {zh:"寄這個",en:"to send this",a:"¿Cuánto cuesta enviar esto?",ipa:"em·ˈbjaɾ · ˈes·to"},
+      {zh:"在這停車",en:"to park here",a:"¿Cuánto cuesta estacionar aquí?",ipa:"es·ta·sjo·ˈnaɾ · a·ˈki"},
+      {zh:"全部",en:"everything",a:"¿Cuánto cuesta todo?",ipa:"ˈto·ðo"},
+      {zh:"月租方案",en:"the monthly plan",a:"¿Cuánto cuesta el plan mensual?",ipa:"el · plan · men·ˈswal"},
+      {zh:"一杯啤酒",en:"a beer",a:"¿Cuánto cuesta la cerveza?",ipa:"la · seɾ·ˈβe·sa"},
+      {zh:"換錢手續費",en:"to change money",a:"¿Cuánto cuesta cambiar dinero?",ipa:"kam·ˈbjaɾ · di·ˈne·ɾo"}
+    ],
+    shadow:{ text:"¿Cuánto cuesta esto? ¿Y cuánto cuesta si llevo dos?",
+      zh:"這個多少錢？如果我買兩個又多少？",
+      rhythm:"<b>CUÁN</b>·to·<b>CUES</b>·ta·<b>ES</b>·to / y·<b>CUÁN</b>·to·<b>CUES</b>·ta·si·<b>LLE</b>·vo·<b>DOS</b>" },
+    scenario:{ zh:"在市場買水果，問「一公斤芒果多少錢」以及「全部多少」。",
+      en:"At a market: ask the price per kilo of mango, and the total.",
+      model:"¿Cuánto cuesta un kilo de mango? ¿Y cuánto cuesta todo?" }
+  },
+
+  {
+    id:"gustaria", title:"Me gustaría ___ .", zh:"我想要 ___（委婉、商務／服務）",
+    goals:["商務","旅遊"],
+    pattern:"Me gustaría reservar una mesa.", patZh:"我想訂一張桌子。", patEn:"I'd like to reserve a table.",
+    ipa:"me · ɣus·ta·ˈɾi·a · re·seɾ·ˈβaɾ · u·na · ˈme·sa",
+    skeleton:"Me gustaría ___ .",
+    rhythm:"me · gus·ta·<b>RÍ</b>·a · re·ser·<b>VAR</b> · u·na · <b>ME</b>·sa",
+    note:"Me gustaría = 我會想要（比 Quiero 更客氣、更正式），字面是「它會讓我高興」。後接 動詞原形 或 名詞。服務、商務場合首選。\nEN: 'Me gustaría' = I would like — softer/more formal than 'Quiero'. + infinitive or noun.",
+    cues:[
+      {zh:"一杯咖啡",en:"a coffee",a:"Me gustaría un café.",ipa:"un · ka·ˈfe"},
+      {zh:"訂一張兩人桌",en:"to reserve a table for two",a:"Me gustaría reservar una mesa para dos.",ipa:"re·seɾ·ˈβaɾ · u·na · ˈme·sa · ˈpa·ɾa · dos"},
+      {zh:"看一下菜單",en:"to see the menu",a:"Me gustaría ver el menú.",ipa:"beɾ · el · me·ˈnu"},
+      {zh:"現在結帳",en:"to pay now",a:"Me gustaría pagar ahora.",ipa:"pa·ˈɣaɾ · a·ˈo·ɾa"},
+      {zh:"一間有景觀的房",en:"a room with a view",a:"Me gustaría una habitación con vista.",ipa:"a·βi·ta·ˈsjon · kon · ˈbis·ta"},
+      {zh:"改我的航班",en:"to change my flight",a:"Me gustaría cambiar mi vuelo.",ipa:"kam·ˈbjaɾ · mi · ˈbwe·lo"},
+      {zh:"和經理談談",en:"to speak with the manager",a:"Me gustaría hablar con el gerente.",ipa:"a·ˈβlaɾ · kon · el · xe·ˈɾen·te"},
+      {zh:"安排一場會議",en:"to schedule a meeting",a:"Me gustaría agendar una reunión.",ipa:"a·xen·ˈdaɾ · u·na · re·u·ˈnjon"},
+      {zh:"試一下這個",en:"to try this",a:"Me gustaría probar esto.",ipa:"pɾo·ˈβaɾ · ˈes·to"},
+      {zh:"更多資訊",en:"more information",a:"Me gustaría más información.",ipa:"mas · in·foɾ·ma·ˈsjon"},
+      {zh:"確認我的訂位",en:"to confirm my reservation",a:"Me gustaría confirmar mi reserva.",ipa:"kon·fiɾ·ˈmaɾ · mi · re·ˈseɾ·βa"},
+      {zh:"八點的兩張票",en:"two tickets for eight",a:"Me gustaría dos boletos para las ocho.",ipa:"dos · bo·ˈle·tos · ˈpa·ɾa · las · ˈo·tʃo"},
+      {zh:"自我介紹一下",en:"to introduce myself",a:"Me gustaría presentarme.",ipa:"pɾe·sen·ˈtaɾ·me"},
+      {zh:"一點折扣",en:"a discount",a:"Me gustaría un descuento.",ipa:"un · des·ˈkwen·to"},
+      {zh:"多住一晚",en:"to stay one more night",a:"Me gustaría quedarme una noche más.",ipa:"ke·ˈðaɾ·me · u·na · ˈno·tʃe · mas"},
+      {zh:"請你喝杯咖啡",en:"to treat you to a coffee",a:"Me gustaría invitarte un café.",ipa:"im·bi·ˈtaɾ·te · un · ka·ˈfe"}
+    ],
+    shadow:{ text:"Buenas tardes, me gustaría reservar una mesa para dos, y me gustaría ver el menú, por favor.",
+      zh:"午安，我想訂一張兩人桌，也想看看菜單，謝謝。",
+      rhythm:"bue·nas·<b>TAR</b>·des / me·gus·ta·<b>RÍ</b>·a·re·ser·<b>VAR</b>·u·na·<b>ME</b>·sa·pa·ra·<b>DOS</b> / y·me·gus·ta·<b>RÍ</b>·a·ver·el·me·<b>NÚ</b>" },
+    scenario:{ zh:"在飯店櫃台，禮貌表達想要「一間有海景的房」並「多住一晚」。",
+      en:"At a hotel desk, politely ask for a room with a sea view and to stay one more night.",
+      model:"Me gustaría una habitación con vista al mar, y me gustaría quedarme una noche más." }
+  },
+
+  {
+    id:"puedo", title:"¿Puedo ___ ?", zh:"我可以 ___ 嗎？（請求許可）",
+    goals:["日常","旅遊"],
+    pattern:"¿Puedo pagar con tarjeta?", patZh:"我可以刷卡嗎？", patEn:"Can I pay by card?",
+    ipa:"ˈpwe·ðo · pa·ˈɣaɾ · kon · taɾ·ˈxe·ta",
+    skeleton:"¿Puedo ___ ?",
+    rhythm:"<b>PUE</b>·do · pa·<b>GAR</b> · con · tar·<b>JE</b>·ta",
+    note:"Puedo = poder（能／可以）的「我」形，後面一定接 動詞原形。反身動詞把 -me 黏在原形後：probarme、sentarme。\nEN: 'Puedo' = Can I / May I. Always + infinitive. Reflexives attach -me: probarme, sentarme.",
+    cues:[
+      {zh:"進來／通過",en:"come in / pass",a:"¿Puedo pasar?",ipa:"pa·ˈsaɾ"},
+      {zh:"刷卡付款",en:"pay by card",a:"¿Puedo pagar con tarjeta?",ipa:"pa·ˈɣaɾ · kon · taɾ·ˈxe·ta"},
+      {zh:"試穿這個",en:"try this on",a:"¿Puedo probarme esto?",ipa:"pɾo·ˈβaɾ·me · ˈes·to"},
+      {zh:"坐這裡",en:"sit here",a:"¿Puedo sentarme aquí?",ipa:"sen·ˈtaɾ·me · a·ˈki"},
+      {zh:"用洗手間",en:"use the bathroom",a:"¿Puedo usar el baño?",ipa:"u·ˈsaɾ · el · ˈba·ɲo"},
+      {zh:"看一下菜單",en:"see the menu",a:"¿Puedo ver el menú?",ipa:"beɾ · el · me·ˈnu"},
+      {zh:"拍張照",en:"take a photo",a:"¿Puedo tomar una foto?",ipa:"to·ˈmaɾ · u·na · ˈfo·to"},
+      {zh:"問個問題",en:"ask a question",a:"¿Puedo hacer una pregunta?",ipa:"a·ˈseɾ · u·na · pɾe·ˈɣun·ta"},
+      {zh:"換位子",en:"change seats",a:"¿Puedo cambiar de asiento?",ipa:"kam·ˈbjaɾ · de · a·ˈsjen·to"},
+      {zh:"把行李放這",en:"leave my suitcase here",a:"¿Puedo dejar mi maleta aquí?",ipa:"de·ˈxaɾ · mi · ma·ˈle·ta · a·ˈki"},
+      {zh:"晚點打給你",en:"call later",a:"¿Puedo llamar más tarde?",ipa:"ʝa·ˈmaɾ · mas · ˈtaɾ·ðe"},
+      {zh:"用 wifi",en:"use the wifi",a:"¿Puedo usar el wifi?",ipa:"u·ˈsaɾ · el · ˈwi·fi"},
+      {zh:"訂明天的",en:"book for tomorrow",a:"¿Puedo reservar para mañana?",ipa:"re·seɾ·ˈβaɾ · ˈpa·ɾa · ma·ˈɲa·na"},
+      {zh:"幫你嗎",en:"help you",a:"¿Puedo ayudarte?",ipa:"a·ʝu·ˈðaɾ·te"},
+      {zh:"加入會議",en:"join the meeting",a:"¿Puedo unirme a la reunión?",ipa:"u·ˈniɾ·me · a · la · re·u·ˈnjon"},
+      {zh:"明天再確認",en:"confirm tomorrow",a:"¿Puedo confirmar mañana?",ipa:"kon·fiɾ·ˈmaɾ · ma·ˈɲa·na"}
+    ],
+    shadow:{ text:"Disculpe, ¿puedo pasar? ¿Y puedo pagar con tarjeta aquí?",
+      zh:"不好意思，我可以過去嗎？這裡可以刷卡嗎？",
+      rhythm:"dis·<b>CUL</b>·pe / <b>PUE</b>·do·pa·<b>SAR</b> / y·<b>PUE</b>·do·pa·<b>GAR</b>·con·tar·<b>JE</b>·ta·a·<b>QUÍ</b>" },
+    scenario:{ zh:"在服飾店，問「我可以試穿這個嗎」和「我可以刷卡嗎」。",
+      en:"In a clothing store, ask if you can try this on and pay by card.",
+      model:"¿Puedo probarme esto? ¿Y puedo pagar con tarjeta?" }
+  },
+
+  {
+    id:"necesito", title:"Necesito ___ .", zh:"我需要 ___（表達需求）",
+    goals:["商務","日常","旅遊"],
+    pattern:"Necesito ayuda.", patZh:"我需要幫忙。", patEn:"I need help.",
+    ipa:"ne·se·ˈsi·to · a·ˈʝu·ða",
+    skeleton:"Necesito ___ .",
+    rhythm:"ne·ce·<b>SI</b>·to · a·<b>YU</b>·da",
+    note:"Necesito = necesitar（需要）的「我」形，後接 名詞 或 動詞原形。表達需求、求助、商務需要都好用。\nEN: 'Necesito' = I need. + noun or infinitive.",
+    cues:[
+      {zh:"幫忙",en:"help",a:"Necesito ayuda.",ipa:"a·ˈʝu·ða"},
+      {zh:"看醫生",en:"a doctor",a:"Necesito un médico.",ipa:"un · ˈme·ði·ko"},
+      {zh:"計程車",en:"a taxi",a:"Necesito un taxi.",ipa:"un · ˈtak·si"},
+      {zh:"去洗手間",en:"to go to the bathroom",a:"Necesito ir al baño.",ipa:"iɾ · al · ˈba·ɲo"},
+      {zh:"換錢",en:"to change money",a:"Necesito cambiar dinero.",ipa:"kam·ˈbjaɾ · di·ˈne·ɾo"},
+      {zh:"手機儲值",en:"a top-up",a:"Necesito una recarga.",ipa:"u·na · re·ˈkaɾ·ɣa"},
+      {zh:"發票",en:"the invoice",a:"Necesito la factura.",ipa:"la · fak·ˈtu·ɾa"},
+      {zh:"休息",en:"to rest",a:"Necesito descansar.",ipa:"des·kan·ˈsaɾ"},
+      {zh:"多一點時間",en:"more time",a:"Necesito más tiempo.",ipa:"mas · ˈtjem·po"},
+      {zh:"找人談談",en:"to talk to someone",a:"Necesito hablar con alguien.",ipa:"a·ˈβlaɾ · kon · ˈal·ɣjen"},
+      {zh:"充電器",en:"a charger",a:"Necesito un cargador.",ipa:"un · kaɾ·ɣa·ˈðoɾ"},
+      {zh:"網路",en:"internet",a:"Necesito internet.",ipa:"in·teɾ·ˈnet"},
+      {zh:"確認地址",en:"to confirm the address",a:"Necesito confirmar la dirección.",ipa:"kon·fiɾ·ˈmaɾ · la · di·ɾek·ˈsjon"},
+      {zh:"收據",en:"a receipt",a:"Necesito un recibo.",ipa:"un · re·ˈsi·βo"},
+      {zh:"早點走",en:"to leave early",a:"Necesito salir temprano.",ipa:"sa·ˈliɾ · tem·ˈpɾa·no"},
+      {zh:"打通電話",en:"to make a call",a:"Necesito hacer una llamada.",ipa:"a·ˈseɾ · u·na · ʝa·ˈma·ða"}
+    ],
+    shadow:{ text:"Disculpe, necesito ayuda. Necesito un taxi y necesito ir al hotel.",
+      zh:"不好意思，我需要幫忙。我需要一輛計程車，我要去飯店。",
+      rhythm:"dis·<b>CUL</b>·pe / ne·ce·<b>SI</b>·to·a·<b>YU</b>·da / ne·ce·<b>SI</b>·to·un·<b>TA</b>·xi / y·ne·ce·<b>SI</b>·to·ir·al·o·<b>TEL</b>" },
+    scenario:{ zh:"你手機沒電又迷路，跟櫃台說你「需要充電器」並「需要打一通電話」。",
+      en:"Your phone died and you're lost. Tell the desk you need a charger and to make a call.",
+      model:"Necesito un cargador y necesito hacer una llamada." }
+  }
+];
+
+/* assign stable cue ids */
+CURRICULUM.forEach(L=>L.cues.forEach((c,i)=>c.id=L.id+":"+i));
+const LESSON_BY_ID={}; CURRICULUM.forEach(L=>LESSON_BY_ID[L.id]=L);
+const CUE_BY_ID={}; CURRICULUM.forEach(L=>L.cues.forEach(c=>CUE_BY_ID[c.id]={cue:c,lesson:L}));
+
+/* ---------- Persistence ---------- */
+const KEY="vamos_v1";
+const DAY=86400000;
+const BOX_INT=[0, 5*60*1000, 1*DAY, 3*DAY, 7*DAY, 21*DAY]; // index by box 1..5
+const DEFAULT_STORE={
+  srs:{}, lessons:{},
+  stats:{ totalReps:0, totalCorrect:0, totalSlow:0, lastActive:null, days:[] },
+  settings:{ rate:0.92, threshold:3, voiceURI:"", useSR:false, theme:"auto" }
+};
+let store = load();
+function load(){
+  try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.settings) return Object.assign({},DEFAULT_STORE,s);}catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_STORE));
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+
+/* ---------- TTS (Web Speech) ---------- */
+let VOICES=[], chosenVoice=null;
+function loadVoices(){
+  VOICES = (window.speechSynthesis? speechSynthesis.getVoices():[]).filter(v=>/^es/i.test(v.lang));
+  // prefer LATAM
+  const pref = ["es-MX","es-US","es-419","es-CO","es-AR","es-CL","es-PE"];
+  fillVoiceSelect();
+  pickVoice(store.settings.voiceURI);
+}
+function pickVoice(uri){
+  if(uri){ chosenVoice = VOICES.find(v=>v.voiceURI===uri)||null; }
+  if(!chosenVoice){
+    const order=["es-MX","es-US","es-419","es-CO","es-AR","es-CL","es-PE","es"];
+    for(const code of order){ chosenVoice = VOICES.find(v=>v.lang.toLowerCase().startsWith(code.toLowerCase())); if(chosenVoice) break; }
+  }
+}
+if(window.speechSynthesis){ speechSynthesis.onvoiceschanged=loadVoices; loadVoices(); }
+let primed=false;
+function primeAudio(){ // unlock TTS on iOS within a user gesture
+  if(primed||!window.speechSynthesis) return; primed=true;
+  try{ const u=new SpeechSynthesisUtterance(" "); u.volume=0; speechSynthesis.speak(u);}catch(e){}
+}
+function speak(text, rate){
+  if(!window.speechSynthesis) return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    if(chosenVoice){ u.voice=chosenVoice; u.lang=chosenVoice.lang; } else { u.lang="es-MX"; }
+    u.rate = rate || store.settings.rate; u.pitch=1;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ---------- Speech Recognition (optional) ---------- */
+const SRClass = window.SpeechRecognition||window.webkitSpeechRecognition;
+const SR_SUPPORTED = !!SRClass;
+let recog=null, recogActive=false;
+function normalize(s){
+  return s.toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g,"") // strip accents
+    .replace(/[¿?¡!.,;:]/g,"").replace(/\s+/g," ").trim();
+}
+function similarity(a,b){ // token overlap ratio (lenient)
+  a=normalize(a).split(" "); b=normalize(b).split(" ");
+  const setB=new Set(b); let hit=0; a.forEach(w=>{if(setB.has(w))hit++;});
+  return hit/Math.max(a.length,b.length,1);
+}
+
+/* ---------- App State ---------- */
+let cur=null; // current lesson session
+const stage=$("stage");
+
+function show(view){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  $("view-"+view).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  // stats
+  $("stStreak").textContent = streakDays();
+  $("stReps").textContent = store.stats.totalReps;
+  const acc = store.stats.totalReps? Math.round(100*store.stats.totalCorrect/store.stats.totalReps):null;
+  $("stAcc").textContent = acc==null? "—" : acc+"%";
+  $("dueBadge").textContent = "複習 "+dueCount();
+  // lessons
+  const list=$("lessonList"); list.innerHTML="";
+  CURRICULUM.forEach((L,i)=>{
+    const lp = store.lessons[L.id]||{};
+    const best = lp.bestReps||0;
+    const pct = Math.min(100, Math.round(100*best/20));
+    const due = L.cues.filter(c=>{const s=store.srs[c.id]; return s && s.due<=Date.now();}).length;
+    const el=document.createElement("div"); el.className="lcard";
+    el.innerHTML=`
+      <div class="lnum">${i+1}</div>
+      <div class="lbody">
+        <div class="lpat">${L.title}</div>
+        <div class="lzh">${L.zh}</div>
+        <div class="tags">${L.goals.map(g=>`<span class="tag">${g}</span>`).join("")}${due?`<span class="tag rev">🔁 複習 ${due}</span>`:""}${lp.done?`<span class="tag">✓ 已通關</span>`:""}</div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+        <div class="lprog">最佳 ${best}/20 reps</div>
+      </div>`;
+    el.onclick=()=>startLesson(L.id);
+    list.appendChild(el);
+  });
+}
+function dueCount(){ const n=Date.now(); return Object.values(store.srs).filter(s=>s.due<=n).length; }
+function streakDays(){
+  const d=store.stats.days; if(!d||!d.length) return 0;
+  // count consecutive days ending today/yesterday
+  const today=dayKey(Date.now()); let streak=0; let cursor=today;
+  const set=new Set(d);
+  if(!set.has(today) && !set.has(dayKey(Date.now()-DAY))) return 0;
+  if(!set.has(today)) cursor=dayKey(Date.now()-DAY);
+  while(set.has(cursor)){ streak++; cursor=dayKey(keyToTime(cursor)-DAY); }
+  return streak;
+}
+function dayKey(t){ const d=new Date(t); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+function keyToTime(k){ const [y,m,d]=k.split("-").map(Number); return new Date(y,m-1,d).getTime(); }
+function markActive(){
+  const k=dayKey(Date.now());
+  if(!store.stats.days.includes(k)) store.stats.days.push(k);
+  store.stats.lastActive=Date.now();
+}
+
+/* ---------- SRS ---------- */
+function srsGet(id){ return store.srs[id] || {box:1, due:0, reps:0, lapses:0}; }
+function srsUpdate(id, correctFast){
+  const s=srsGet(id);
+  if(correctFast){ s.box=Math.min(5,s.box+1); s.reps++; }
+  else { s.box=Math.max(1,s.box-1); s.lapses++; }
+  s.due=Date.now()+BOX_INT[s.box];
+  s.last=Date.now();
+  store.srs[id]=s;
+}
+function buildReviewPool(currentLessonId){
+  const n=Date.now(); const pool=[];
+  // due first (from other lessons), then any seen from other lessons
+  const seen=Object.keys(store.srs).map(id=>CUE_BY_ID[id]).filter(Boolean)
+    .filter(x=>x.lesson.id!==currentLessonId);
+  const due = seen.filter(x=>store.srs[x.cue.id].due<=n);
+  const others = seen.filter(x=>store.srs[x.cue.id].due>n);
+  shuffle(due); shuffle(others);
+  return due.concat(others).slice(0,10).map(x=>x.cue.id);
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* ---------- LESSON SESSION ---------- */
+function startLesson(id){
+  primeAudio();
+  const L=LESSON_BY_ID[id];
+  cur={
+    L, reps:0, sinceShadow:0, didOutput:false,
+    ring:[], reviewPool:buildReviewPool(id),
+    lastNewId:null, attempts:0, currentItem:null, reviewServed:0
+  };
+  $("lessonTitle").textContent=L.title;
+  show("lesson");
+  updateRep();
+  renderEcho();
+}
+function updateRep(){
+  $("repCount").textContent = cur.reps+" / 20";
+  $("lessonBar").style.width = Math.min(100,(cur.reps/20)*100)+"%";
+}
+
+/* Phase 1: ECHO */
+function renderEcho(){
+  const L=cur.L;
+  stage.innerHTML=`
+    <div class="card">
+      <span class="phaselabel pl-echo">① 回音法 · ECHO</span>
+      <div class="es">${L.pattern}</div>
+      <div class="ipa">${L.ipa}</div>
+      <div class="gloss"><div class="zh">${L.patZh}</div><div class="en">${L.patEn}</div></div>
+      <div class="rhythm">${L.rhythm}</div>
+      <div class="note"><span class="lbl">文法 GRAMÁTICA</span><br/>${L.note}</div>
+    </div>
+    <button class="btn audio" id="echoPlay">🔊 播放並跟讀 · Escucha y repite</button>
+    <button class="btn good huge" id="echoStart">我讀完了，開始替換練習 →</button>
+    <button class="mini" id="echoSlow">🐢 慢速再聽一次 · Más despacio</button>
+  `;
+  $("echoPlay").onclick=()=>{ primeAudio(); speak(L.pattern); };
+  $("echoSlow").onclick=()=>{ primeAudio(); speak(L.pattern, Math.max(0.5, store.settings.rate-0.25)); };
+  $("echoStart").onclick=()=>{ primeAudio(); nextCue(); };
+  setTimeout(()=>{ primeAudio(); speak(L.pattern); }, 350);
+}
+
+/* choose next drill item */
+function nextCue(){
+  cur.attempts=0;
+  // interleave a due review ~22% of the time, but not on the very first item
+  const wantReview = cur.reviewPool.length>0 && cur.reps>0 && Math.random()<0.22;
+  if(wantReview){
+    const id=cur.reviewPool.shift();
+    const ref=CUE_BY_ID[id];
+    cur.currentItem={type:"review", cue:ref.cue, lesson:ref.lesson};
+    cur.reviewServed++;
+  } else {
+    if(cur.ring.length===0){
+      cur.ring=shuffle(cur.L.cues.slice());
+      if(cur.ring[0] && cur.ring[0].id===cur.lastNewId && cur.ring.length>1){ const t=cur.ring.shift(); cur.ring.push(t); }
+    }
+    const cue=cur.ring.shift(); cur.lastNewId=cue.id;
+    cur.currentItem={type:"new", cue, lesson:cur.L};
+  }
+  renderDrill();
+}
+
+/* Phase 2: SUBSTITUTION DRILL with 3s timer */
+let rafId=null, cueStart=0, running=false;
+function renderDrill(){
+  const it=cur.currentItem; const c=it.cue;
+  const isRev = it.type==="review";
+  const th = store.settings.threshold;
+  const sk = it.lesson.skeleton.replace("___","<u>"+c.zh+"</u>");
+  stage.innerHTML=`
+    <div class="card" style="text-align:center">
+      <span class="phaselabel pl-drill">② 替換練習 · DRILL${isRev?" 🔁複習":""}</span>
+      <div class="skeleton">${sk}</div>
+      <div class="cueprompt">${c.zh}</div>
+      <div class="cueen">${c.en}</div>
+      <div class="ringwrap">
+        <svg class="ring" width="150" height="150" viewBox="0 0 120 120">
+          <circle class="track" cx="60" cy="60" r="52"></circle>
+          <circle class="prog" id="ringProg" cx="60" cy="60" r="52"
+            stroke-dasharray="${2*Math.PI*52}" stroke-dashoffset="0"></circle>
+        </svg>
+        <div class="ringnum" id="ringNum">${th.toFixed(1)}<small>s</small></div>
+      </div>
+      <div class="instr">${isRev?"複習舊句型！":"用句型大聲說出完整句子！"}<br/>Di la frase completa en voz alta.</div>
+    </div>
+    <button class="btn huge" id="listoBtn">🗣️ 我說完了 · ¡Listo!</button>
+    ${store.settings.useSR&&SR_SUPPORTED?`<div class="mini" id="srHint">🎙️ 聆聽中… 直接用西語說出來</div>`:`<button class="mini" id="revealNow"><u>不會？看答案 · No sé</u></button>`}
+  `;
+  $("listoBtn").onclick=onListo;
+  const rn=$("revealNow"); if(rn) rn.onclick=()=>{ running=false; cancelAnimationFrame(rafId); reveal(true); };
+  startTimer(th);
+  if(store.settings.useSR && SR_SUPPORTED) startRecog();
+}
+function startTimer(th){
+  const R=2*Math.PI*52;
+  cueStart=performance.now(); running=true;
+  const ringProg=$("ringProg"), ringNum=$("ringNum");
+  function tick(){
+    if(!running) return;
+    const el=(performance.now()-cueStart)/1000;
+    const remain=Math.max(0, th-el);
+    const frac=el/th;
+    if(ringProg){ ringProg.style.strokeDashoffset=(R*Math.min(1,frac)).toFixed(1);
+      ringProg.style.stroke = remain<th*0.33? "var(--bad)" : (remain<th*0.66?"var(--brand2)":"var(--brand)"); }
+    if(ringNum) ringNum.textContent = remain.toFixed(1); // seconds
+    if(remain<=0){ running=false; onSlow(); return; }
+    rafId=requestAnimationFrame(tick);
+  }
+  // show small to allow <small>s</small>? simpler: number only while ticking
+  rafId=requestAnimationFrame(tick);
+}
+function elapsedSec(){ return (performance.now()-cueStart)/1000; }
+
+function onListo(){
+  if(!running) return; running=false; cancelAnimationFrame(rafId); stopRecog();
+  const slow = elapsedSec() > store.settings.threshold;
+  if(slow){ onSlow(); return; }
+  reveal(false); // in time → reveal + self check
+}
+function onSlow(){
+  cancelAnimationFrame(rafId); running=false; stopRecog();
+  cur.attempts++;
+  store.stats.totalSlow++;
+  // count as a (failed) attempt rep
+  countRep(false);
+  srsUpdate(cur.currentItem.cue.id, false);
+  save();
+  const ov=$("slowOverlay"); ov.classList.add("show");
+  if(navigator.vibrate) navigator.vibrate(120);
+  setTimeout(()=>{
+    ov.classList.remove("show");
+    if(cur.attempts>=2){ reveal(true, /*afterSlow*/true); } // give the answer as a hint after 2 misses
+    else { renderDrill(); } // repeat same cue
+  }, 1250);
+}
+
+function reveal(viaHint, afterSlow){
+  const it=cur.currentItem; const c=it.cue;
+  primeAudio(); speak(c.a);
+  const hintMode = viaHint===true;
+  stage.innerHTML=`
+    <div class="card reveal" style="text-align:center">
+      <span class="phaselabel pl-drill">② 替換練習 · DRILL</span>
+      <div class="es small">${c.a}</div>
+      <div class="ipa">${c.ipa}</div>
+      <div class="gloss"><div class="zh">${c.zh} · ${c.en}</div></div>
+      <button class="btn audio" id="replay" style="margin-top:14px">🔊 再聽一次 · Otra vez</button>
+    </div>
+    ${hintMode
+      ? `<button class="btn huge" id="contBtn">${afterSlow?"看過了，繼續 →":"懂了，下一個 →"}</button>`
+      : `<div class="instr" style="text-align:center;margin:-2px 0 2px">你剛剛說對了嗎？ · ¿Lo dijiste bien?</div>
+         <div class="btnrow">
+           <button class="btn good" id="okBtn">✅ 對了</button>
+           <button class="btn bad" id="noBtn">🔁 沒說對</button>
+         </div>`}
+  `;
+  $("replay").onclick=()=>{ primeAudio(); speak(c.a); };
+  if(hintMode){
+    $("contBtn").onclick=()=>{
+      // hint shown after misses: count a success-with-help so user can progress, but SRS already demoted
+      advanceAfterSuccess(/*helped*/true);
+    };
+  } else {
+    $("okBtn").onclick=()=>{ srsUpdate(c.id,true); countRep(true); advanceAfterSuccess(false); };
+    $("noBtn").onclick=()=>{ srsUpdate(c.id,false); countRep(false); cur.attempts++;
+      if(cur.attempts>=2){ reveal(true,false); } else { renderDrill(); } };
+  }
+}
+
+function countRep(correct){
+  store.stats.totalReps++;
+  if(correct) store.stats.totalCorrect++;
+  markActive(); save();
+}
+
+function advanceAfterSuccess(helped){
+  // only NEW cues advance the pattern-mastery counter
+  if(cur.currentItem.type==="new" && !helped){ cur.reps++; cur.sinceShadow++; }
+  else if(cur.currentItem.type==="new" && helped){ cur.reps++; cur.sinceShadow++; } // still progress
+  // save best
+  const lp=store.lessons[cur.L.id]||{bestReps:0};
+  if(cur.reps>(lp.bestReps||0)) lp.bestReps=cur.reps;
+  store.lessons[cur.L.id]=lp; save();
+  updateRep();
+
+  // triggers
+  if(!cur.didOutput && cur.reps>=20){ cur.didOutput=true; lp.done=true; save(); renderOutput(); return; }
+  if(cur.sinceShadow>=5){ cur.sinceShadow=0; renderShadow(); return; }
+  nextCue();
+}
+
+/* Phase 3: SHADOWING */
+function renderShadow(){
+  const s=cur.L.shadow;
+  stage.innerHTML=`
+    <div class="card">
+      <span class="phaselabel pl-shadow">③ 影子練習 · SHADOWING</span>
+      <div class="instr" style="margin:0 0 10px">跟著母語節奏一起說，慢→快各一次。Imita el ritmo.</div>
+      <div class="es small">${s.text}</div>
+      <div class="rhythm">${s.rhythm}</div>
+      <div class="gloss"><div class="zh">${s.zh}</div></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn audio" id="shSlow">🐢 慢速</button>
+      <button class="btn audio" id="shNorm">▶️ 正常速</button>
+    </div>
+    <button class="btn good huge" id="shCont">跟讀完成，繼續 →</button>
+  `;
+  $("shSlow").onclick=()=>{ primeAudio(); speak(s.text, Math.max(0.5,store.settings.rate-0.25)); };
+  $("shNorm").onclick=()=>{ primeAudio(); speak(s.text); };
+  $("shCont").onclick=()=>nextCue();
+  setTimeout(()=>{ primeAudio(); speak(s.text, Math.max(0.5,store.settings.rate-0.2)); }, 300);
+}
+
+/* Phase 4: OUTPUT */
+function renderOutput(){
+  const sc=cur.L.scenario;
+  stage.innerHTML=`
+    <div class="card">
+      <span class="phaselabel pl-output">④ 情境輸出 · OUTPUT</span>
+      <div class="instr" style="margin:0 0 8px">🎉 滿 20 次！真實情境，用「${cur.L.title}」即興造句。</div>
+      <div class="es small" style="font-size:18px">${sc.zh}</div>
+      <div class="gloss"><div class="en">${sc.en}</div></div>
+      <div id="modelBox" class="note hidden"><span class="lbl">參考答案 MODELO</span><br/><b style="font-size:17px">${sc.model}</b></div>
+    </div>
+    <button class="btn huge" id="showModel">🗣️ 先自己說，再看參考答案</button>
+    <div class="btnrow hidden" id="outDone">
+      <button class="btn ghost" id="moreReps">再練一輪</button>
+      <button class="btn good" id="finish">完成 ✓ 回首頁</button>
+    </div>
+  `;
+  $("showModel").onclick=()=>{
+    $("modelBox").classList.remove("hidden");
+    $("showModel").classList.add("hidden");
+    $("outDone").classList.remove("hidden");
+    primeAudio(); speak(cur.L.scenario.model);
+  };
+  $("moreReps")&&($("moreReps").onclick=()=>nextCue());
+  setTimeout(()=>{ const f=$("finish"); if(f)f.onclick=()=>{ renderHome(); show("home"); };
+                   const m=$("moreReps"); if(m)m.onclick=()=>nextCue(); },0);
+}
+
+/* ---------- Speech recognition flow ---------- */
+function startRecog(){
+  if(!SR_SUPPORTED) return;
+  try{
+    recog=new SRClass(); recog.lang=(chosenVoice&&chosenVoice.lang)||"es-MX";
+    recog.interimResults=false; recog.maxAlternatives=3; recogActive=true;
+    recog.onresult=(e)=>{
+      if(!running) return;
+      const slow=elapsedSec()>store.settings.threshold;
+      running=false; cancelAnimationFrame(rafId);
+      let best=0; const target=cur.currentItem.cue.a;
+      for(let i=0;i<e.results[0].length;i++){ best=Math.max(best, similarity(e.results[0][i].transcript, target)); }
+      const ok = best>=0.6 && !slow;
+      const c=cur.currentItem.cue;
+      if(ok){ srsUpdate(c.id,true); countRep(true); flashAuto(true, ()=>advanceAfterSuccess(false)); }
+      else if(slow){ onSlow(); }
+      else { srsUpdate(c.id,false); countRep(false); cur.attempts++;
+             flashAuto(false, ()=>{ if(cur.attempts>=2) reveal(true,false); else renderDrill(); }); }
+    };
+    recog.onerror=()=>{};
+    recog.start();
+  }catch(e){}
+}
+function stopRecog(){ if(recog&&recogActive){ try{recog.stop();}catch(e){} recogActive=false; } }
+function flashAuto(ok, cb){
+  const c=cur.currentItem.cue; speak(c.a);
+  stage.innerHTML=`<div class="card reveal" style="text-align:center">
+    <div class="tickbig">${ok?"✅":"❌"}</div>
+    <div class="es small">${c.a}</div><div class="ipa">${c.ipa}</div>
+    <div class="gloss"><div class="zh">${c.zh} · ${c.en}</div></div></div>`;
+  setTimeout(cb, 1300);
+}
+
+/* ---------- SETTINGS wiring ---------- */
+function fillVoiceSelect(){
+  const sel=$("voiceSel"); if(!sel) return; sel.innerHTML="";
+  if(!VOICES.length){ const o=document.createElement("option"); o.textContent="（裝置未提供西語聲音）"; sel.appendChild(o); return; }
+  VOICES.forEach(v=>{ const o=document.createElement("option"); o.value=v.voiceURI; o.textContent=`${v.name} (${v.lang})`; sel.appendChild(o); });
+  if(store.settings.voiceURI) sel.value=store.settings.voiceURI;
+}
+function applyTheme(){
+  const t=store.settings.theme;
+  if(t==="auto"){ document.documentElement.removeAttribute("data-theme"); document.documentElement.style.colorScheme="light dark"; }
+  else { document.documentElement.setAttribute("data-theme", t); document.documentElement.style.colorScheme=t; }
+}
+function initSettings(){
+  $("rateSel").value=store.settings.rate; $("rateVal").textContent=store.settings.rate.toFixed(2);
+  $("thSel").value=store.settings.threshold; $("thVal").textContent=store.settings.threshold.toFixed(1)+"s";
+  $("themeSel").value=store.settings.theme;
+  $("srToggle").checked=store.settings.useSR && SR_SUPPORTED;
+  if(!SR_SUPPORTED){ $("srToggle").disabled=true; $("srUnsupported").classList.remove("hidden"); }
+  $("rateSel").oninput=e=>{ store.settings.rate=parseFloat(e.target.value); $("rateVal").textContent=store.settings.rate.toFixed(2); save(); };
+  $("thSel").oninput=e=>{ store.settings.threshold=parseFloat(e.target.value); $("thVal").textContent=store.settings.threshold.toFixed(1)+"s"; save(); };
+  $("voiceSel").onchange=e=>{ store.settings.voiceURI=e.target.value; pickVoice(e.target.value); save(); };
+  $("themeSel").onchange=e=>{ store.settings.theme=e.target.value; applyTheme(); save(); };
+  $("srToggle").onchange=e=>{ store.settings.useSR=e.target.checked; save(); };
+  $("testVoice").onclick=()=>{ primeAudio(); speak("¡Hola! Quiero un café, por favor."); };
+  $("resetBtn").onclick=()=>{ if(confirm("確定清除所有進度與 SRS 記錄？此動作無法復原。")){ localStorage.removeItem(KEY); store=load(); renderHome(); initSettings(); alert("已重設 · Listo."); } };
+}
+
+/* ---------- nav ---------- */
+$("btnSettings").onclick=()=>{ initSettings(); fillVoiceSelect(); show("settings"); };
+$("btnBack").onclick=()=>{ stopRecog(); running=false; cancelAnimationFrame(rafId); renderHome(); show("home"); };
+$("btnBack2").onclick=()=>{ renderHome(); show("home"); };
+window.addEventListener("pagehide",()=>{ try{speechSynthesis.cancel();}catch(e){} });
+
+/* ---------- boot ---------- */
+applyTheme();
+renderHome();
+
+/* ---------- service worker (only when served over http/https) ---------- */
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
+</body>
+</html>
