@@ -1,6 +1,13 @@
 /* ¡Vamos! service worker — offline app shell */
-const CACHE = "vamos-v1";
-const ASSETS = ["./", "./index.html", "./manifest.webmanifest"];
+const CACHE = "vamos-v2";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-180.png"
+];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
@@ -17,7 +24,7 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
-  // network-first for navigation, cache-first for the rest
+  // network-first for navigation (always get fresh app when online), cache-first otherwise
   if (req.mode === "navigate") {
     e.respondWith(fetch(req).catch(() => caches.match("./index.html")));
     return;
